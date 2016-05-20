@@ -1,0 +1,92 @@
+.DashboardPage {
+
+  .container {
+    max-width: 100%;
+  }
+
+  .DashboardGraph {
+    background: white;
+    padding: 10px 5px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+
+    .DashboardGraph--Category {
+      color: #9CADBC;
+      text-transform: uppercase;
+      width: 30%;
+      display: inline-block;
+      text-align: center;
+
+      .color {
+        content: " ";
+        display: inline-block;
+        width: 11px;
+        height: 11px;
+        border-radius: 3px;
+        margin-right: 4px;
+      }
+
+      .number {
+        width: 100%;
+        font-size: 1.8em;
+        color: #484848;
+      }
+
+      &.Category--Users .color {
+        background-color: #00b3ee;
+      }
+
+      &.Category--Discussions .color {
+        background-color: orange;
+      }
+
+      &.Category--Posts .color {
+        background-color: yellow;
+      }
+    }
+
+    .DashboardGraph--Graph {
+
+      .DashboardGraph--Month {
+        width: 8%;
+        display: inline-block;
+        text-align: center;
+
+        .bar {
+          margin-bottom: 10px;
+        }
+        .name {
+          color: #ACBAC7;
+          text-transform: capitalize;
+        }
+      }
+
+    }
+
+  }
+
+  .versions {
+    background: white;
+    padding: 1px 1.25px;
+    width: 100%;
+    border-radius: 5px;
+
+    ul {
+      list-style-type: none;
+
+      li {
+        display: inline;
+        margin-right: 20px;
+      }
+    }
+  }
+}
+
+
+@media (max-width: 1006px) {
+
+  .DashboardPage .container {
+    padding-top: 20px;
+  }
+
+}
