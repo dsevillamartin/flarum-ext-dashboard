@@ -6,6 +6,7 @@ var loadedStuff = false;
 var discussions = null;
 var users = null;
 var posts = null;
+var warning = null;
 
 export default class DashboardGraph extends Component {
 
@@ -56,13 +57,12 @@ export default class DashboardGraph extends Component {
 
         loadedStuff = true;
 
-        app.store.find('discussions',
-            {
-                sort: '-startTime',
-                page: {
-                    limit: 1
-                }
-            }).then(discussion => {
+        app.store.find('discussions',{
+            sort: '-startTime',
+            page: {
+                limit: 1
+            }
+        }).then(discussion => {
 
             discussions = (discussion && discussion[0]) ? discussion[0].id() : '???';
             m.redraw();
@@ -82,6 +82,14 @@ export default class DashboardGraph extends Component {
                 m.redraw();
 
             });
+
+            setTimeout(() => {
+                loadedStuff = false;
+                discussions, users, posts = null;
+
+                m.redraw();
+
+            }, 50000);
         });
 
     }
@@ -109,5 +117,6 @@ export default class DashboardGraph extends Component {
         )
 
     }
+    
 }
 

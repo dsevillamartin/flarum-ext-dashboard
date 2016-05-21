@@ -5,7 +5,7 @@ namespace Datitisev\Dashboard\Listeners;
 use Flarum\Event\PrepareUnserializedSettings;
 use Illuminate\Contracts\Events\Dispatcher;
 
-class PrepareUnserializedSettings {
+class PassDataToAdmin {
 
     /**
      * Subscribes to the Flarum events
