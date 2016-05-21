@@ -1,26 +1,27 @@
 import { extend } from 'flarum/extend';
 import Component from 'flarum/Component';
 import app from 'flarum/app';
+import Button from'flarum/components/Button';
 
 import DashboardGraph from 'datitisev/dashboard/components/DashboardGraph';
 
 var error = null;
 var solution = null;
 var loadedUpdates = false;
+var extensionUpdates = 'checking';
 
 export default class DashboardPage extends Component {
 
     init() {
 
         if (!loadedUpdates) {
-            console.log(loadedUpdates);
             this.getPackagesAndVersions().then(stuff => {
-                console.log(stuff);
                 error, solution = null;
+                extensionUpdates = stuff.length;
             }).catch(err => {
                 error = err;
                 solution = 'Try to put your secret key / token and try again';
-                m.redraw();
+                m.redraw().strategy('all');
             });
         }
     }
@@ -36,6 +37,12 @@ export default class DashboardPage extends Component {
                         {solution}
                     </div>
                     <ul>
+                        <li className={extensionUpdates !== 0 && !error ? 'DashboardPage--ExtensionUpdates' : 'DashboardPage--ExtensionUpdates hidden'}>{Button.component({
+                            children: (!error) ? (extensionUpdates == 'checking' ? app.translator.trans('datitisev-dashboard.admin.dashboard.checking_updates') : ( extensionUpdates == 0 ? 'No Updates' : app.translator.trans('datitisev-dashboard.admin.dashboard.extension_updates', {number: extensionUpdates}) ) ): app.translator.trans('datitisev-dashboard.admin.dashboard.checking_updates_error'),
+                            className: 'Button Button--primary ' + (extensionUpdates == 0 ? 'disabled' : ''),
+                            disabled: extensionUpdates == 0,
+                            loading: extensionUpdates == 'checking'
+                        })}</li>
                         <li>{app.translator.trans('datitisev-dashboard.admin.dashboard.flarum_version', {version: <strong>{app.forum.attribute('version')}</strong>})}</li>
                         <li>{app.translator.trans('datitisev-dashboard.admin.dashboard.php_version', {version: <strong>{app.settings['phpVersion']}</strong>})}</li>
                         <li>{app.translator.trans('datitisev-dashboard.admin.dashboard.mysql_version', {version: <strong>{app.settings['mysqlVersion']}</strong>})}</li>
@@ -78,12 +85,17 @@ export default class DashboardPage extends Component {
                     if (data) {
                         let newVersion = (data && data.length) ? data[0].tag_name : null;
                         let version = currentExtension.version;
+                        // let version = 'some_other_version';
 
                         if (newVersion && version != newVersion && version !== 'dev-master' && version != '@dev') {
-                            needsUpdate.push({
+                            Promise.resolve(needsUpdate.push({
                                 name: currentExtension.name,
                                 oldVersion: version,
                                 newVersion: newVersion
+                            })).then(() => {
+                                if (o.length - 1 == i) {
+                                    resolve(needsUpdate);
+                                }
                             })
                         }
                     }

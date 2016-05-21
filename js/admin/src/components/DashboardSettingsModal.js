@@ -18,6 +18,9 @@ export default class DashboardSettingsModal extends SettingsModal {
                 <input type="text" className="FormControl" bidi={this.setting('datitisev-dashboard.github.client_id')}></input>
                 <label htmlFor="client_id">{app.translator.trans('datitisev-dashboard.admin.settings.clientSecret_label')}</label>
                 <input type="text" className="FormControl" bidi={this.setting('datitisev-dashboard.github.client_secret')}></input>
+                <h2>{app.translator.trans('datitisev-dashboard.admin.settings.graph_heading')}</h2>
+                <label htmlFor="client_id">{app.translator.trans('datitisev-dashboard.admin.settings.interval_label')}</label>
+                <input type="number" className="FormControl" bidi={this.setting('datitisev-dashboard.graph.dataInterval')}></input>
             </div>
         ];
     }

@@ -82,14 +82,14 @@ export default class DashboardGraph extends Component {
                 m.redraw();
 
             });
-
+            
             setTimeout(() => {
                 loadedStuff = false;
                 discussions, users, posts = null;
 
                 m.redraw();
 
-            }, 50000);
+            }, Math.round(parseInt(app.forum.attribute('datitisev-dashboard.graph.dataInterval') || '10')) * (60 * 1000));
         });
 
     }

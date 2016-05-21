@@ -27,3 +27,17 @@ datitisev-dashboard:
       flarum_version: "Flarum {version}"
       php_version: "PHP {version}"
       mysql_version: "MySQL {version}"
+      extension_updates: "{number} Updates Avaliable"
+      checking_updates_error: "Error Checking Updates!"
+      checking_updates: "Checking Updates..."
+
+
+    ## Settings for the extension
+    settings:
+
+      github_heading: Github
+      clientId_label: Client Id
+      clientSecret_label: Client Secret
+
+      graph_heading: Dashboard
+      interval_label: How often to get new data (discussions, users...) in minutes (whole number). Defaults to 10min

@@ -138,7 +138,7 @@ System.register('datitisev/dashboard/components/DashboardGraph', ['flarum/extend
                                 discussions, users, posts = null;
 
                                 m.redraw();
-                            }, 50000);
+                            }, Math.round(parseInt(app.forum.attribute('datitisev-dashboard.graph.dataInterval') || '10')) * (60 * 1000));
                         });
                     }
                 }, {
@@ -175,10 +175,10 @@ System.register('datitisev/dashboard/components/DashboardGraph', ['flarum/extend
         }
     };
 });;
-System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend', 'flarum/Component', 'flarum/app', 'datitisev/dashboard/components/DashboardGraph'], function (_export) {
+System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend', 'flarum/Component', 'flarum/app', 'flarum/components/Button', 'datitisev/dashboard/components/DashboardGraph'], function (_export) {
     'use strict';
 
-    var extend, Component, app, DashboardGraph, error, solution, loadedUpdates, DashboardPage;
+    var extend, Component, app, Button, DashboardGraph, error, solution, loadedUpdates, extensionUpdates, DashboardPage;
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
@@ -186,6 +186,8 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
             Component = _flarumComponent['default'];
         }, function (_flarumApp) {
             app = _flarumApp['default'];
+        }, function (_flarumComponentsButton) {
+            Button = _flarumComponentsButton['default'];
         }, function (_datitisevDashboardComponentsDashboardGraph) {
             DashboardGraph = _datitisevDashboardComponentsDashboardGraph['default'];
         }],
@@ -193,6 +195,7 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
             error = null;
             solution = null;
             loadedUpdates = false;
+            extensionUpdates = 'checking';
 
             DashboardPage = (function (_Component) {
                 babelHelpers.inherits(DashboardPage, _Component);
@@ -207,14 +210,13 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
                     value: function init() {
 
                         if (!loadedUpdates) {
-                            console.log(loadedUpdates);
                             this.getPackagesAndVersions().then(function (stuff) {
-                                console.log(stuff);
                                 error, solution = null;
+                                extensionUpdates = stuff.length;
                             })['catch'](function (err) {
                                 error = err;
                                 solution = 'Try to put your secret key / token and try again';
-                                m.redraw();
+                                m.redraw().strategy('all');
                             });
                         }
                     }
@@ -257,6 +259,16 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
                                     m(
                                         'ul',
                                         null,
+                                        m(
+                                            'li',
+                                            { className: extensionUpdates !== 0 && !error ? 'DashboardPage--ExtensionUpdates' : 'DashboardPage--ExtensionUpdates hidden' },
+                                            Button.component({
+                                                children: !error ? extensionUpdates == 'checking' ? app.translator.trans('datitisev-dashboard.admin.dashboard.checking_updates') : extensionUpdates == 0 ? 'No Updates' : app.translator.trans('datitisev-dashboard.admin.dashboard.extension_updates', { number: extensionUpdates }) : app.translator.trans('datitisev-dashboard.admin.dashboard.checking_updates_error'),
+                                                className: 'Button Button--primary ' + (extensionUpdates == 0 ? 'disabled' : ''),
+                                                disabled: extensionUpdates == 0,
+                                                loading: extensionUpdates == 'checking'
+                                            })
+                                        ),
                                         m(
                                             'li',
                                             null,
@@ -323,12 +335,17 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
                                     if (data) {
                                         var newVersion = data && data.length ? data[0].tag_name : null;
                                         var version = currentExtension.version;
+                                        // let version = 'some_other_version';
 
                                         if (newVersion && version != newVersion && version !== 'dev-master' && version != '@dev') {
-                                            needsUpdate.push({
+                                            Promise.resolve(needsUpdate.push({
                                                 name: currentExtension.name,
                                                 oldVersion: version,
                                                 newVersion: newVersion
+                                            })).then(function () {
+                                                if (o.length - 1 == i) {
+                                                    resolve(needsUpdate);
+                                                }
                                             });
                                         }
                                     }
@@ -416,7 +433,18 @@ System.register('datitisev/dashboard/components/DashboardSettingsModal', ['flaru
                                 { htmlFor: 'client_id' },
                                 app.translator.trans('datitisev-dashboard.admin.settings.clientSecret_label')
                             ),
-                            m('input', { type: 'text', className: 'FormControl', bidi: this.setting('datitisev-dashboard.github.client_secret') })
+                            m('input', { type: 'text', className: 'FormControl', bidi: this.setting('datitisev-dashboard.github.client_secret') }),
+                            m(
+                                'h2',
+                                null,
+                                app.translator.trans('datitisev-dashboard.admin.settings.graph_heading')
+                            ),
+                            m(
+                                'label',
+                                { htmlFor: 'client_id' },
+                                app.translator.trans('datitisev-dashboard.admin.settings.interval_label')
+                            ),
+                            m('input', { type: 'number', className: 'FormControl', bidi: this.setting('datitisev-dashboard.graph.dataInterval') })
                         )];
                     }
                 }]);
