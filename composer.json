@@ -10,6 +10,14 @@
       "title": "Admin Dashboard"
     }
   },
+  "authors": [
+    {
+      "name": "David Sevilla Martín",
+      "email": "dsevilla192@icloud.com",
+      "homepage": "https://github.com/datitisev",
+      "role": "Developer"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "Datitisev\\Dashboard\\": "src/"
