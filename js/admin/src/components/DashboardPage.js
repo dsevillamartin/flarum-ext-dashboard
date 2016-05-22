@@ -11,7 +11,7 @@ var loadedUpdates = false;
 var extensionUpdates = 'checking';
 
 export default class DashboardPage extends Component {
-
+    
     init() {
 
         if (!loadedUpdates) {
@@ -21,6 +21,7 @@ export default class DashboardPage extends Component {
             }).catch(err => {
                 error = err;
                 solution = 'Try to put your secret key / token and try again';
+                extensionUpdates = ‘error’;
                 m.redraw().strategy('all');
             });
         }

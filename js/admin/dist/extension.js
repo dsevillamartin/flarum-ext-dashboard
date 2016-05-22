@@ -481,4 +481,41 @@ System.register('datitisev/dashboard/main', ['flarum/extend', 'flarum/app', 'dat
             });
         }
     };
+});;
+System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum/components/Modal', 'flarum/app'], function (_export) {
+  'use strict';
+
+  var Modal, app, ExtensionUpdatesModal;
+  return {
+    setters: [function (_flarumComponentsModal) {
+      Modal = _flarumComponentsModal['default'];
+    }, function (_flarumApp) {
+      app = _flarumApp['default'];
+    }],
+    execute: function () {
+      ExtensionUpdatesModal = (function (_Modal) {
+        babelHelpers.inherits(ExtensionUpdatesModal, _Modal);
+
+        function ExtensionUpdatesModal() {
+          babelHelpers.classCallCheck(this, ExtensionUpdatesModal);
+          babelHelpers.get(Object.getPrototypeOf(ExtensionUpdatesModal.prototype), 'constructor', this).apply(this, arguments);
+        }
+
+        babelHelpers.createClass(ExtensionUpdatesModal, [{
+          key: 'className',
+          value: function className() {
+            return 'DashboardSettingsModal Modal--large';
+          }
+        }, {
+          key: 'title',
+          value: function title() {
+            return app.translator.trans('datitisev-dashboard.admin.dashboard.extension_updates', { number: extensionUpdates });
+          }
+        }]);
+        return ExtensionUpdatesModal;
+      })(Modal);
+
+      _export('default', ExtensionUpdatesModal);
+    }
+  };
 });
