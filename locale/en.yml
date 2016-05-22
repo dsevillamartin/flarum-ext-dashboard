@@ -27,15 +27,23 @@ datitisev-dashboard:
       flarum_version: "Flarum {version}"
       php_version: "PHP {version}"
       mysql_version: "MySQL {version}"
-      extension_updates: "{number} Updates Avaliable"
-      checking_updates_error: "Error Checking Updates!"
-      checking_updates: "Checking Updates..."
+
+      extensionUpdates:
+        checkUpdates_button: Check Extension Updates
+        checking: "Checking Updates..."
+        updatesAvaliable: "{number} Updates Avaliable"
+        noUpdates: "No Updates!"
+        error: "Error Checking Updates!"
+        addClientIdAndSecret:  => datitisev-dashboard.admin.settings.github_description
+        createApp:  => datitisev-dashboard.admin.settings.github_createApp
 
 
     ## Settings for the extension
     settings:
 
       github_heading: Github
+      github_description: "The Client ID and Client Secret of a Github app are necessary so you do not exceed the API rate limit."
+      github_createApp: "Create an app at https://github.com/settings/developers and introduce the credentials in the extension settings"
       clientId_label: Client Id
       clientSecret_label: Client Secret
 

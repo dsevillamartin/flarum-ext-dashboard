@@ -4,6 +4,7 @@ import app from 'flarum/app';
 import Button from'flarum/components/Button';
 
 import DashboardGraph from 'datitisev/dashboard/components/DashboardGraph';
+import ExtensionUpdatesModal from 'datitisev/dashboard/components/ExtensionUpdatesModal';
 
 var error = null;
 var solution = null;
@@ -14,17 +15,6 @@ export default class DashboardPage extends Component {
     
     init() {
 
-        if (!loadedUpdates) {
-            this.getPackagesAndVersions().then(stuff => {
-                error, solution = null;
-                extensionUpdates = stuff.length;
-            }).catch(err => {
-                error = err;
-                solution = 'Try to put your secret key / token and try again';
-                extensionUpdates = ‘error’;
-                m.redraw().strategy('all');
-            });
-        }
     }
 
     view() {
@@ -33,20 +23,19 @@ export default class DashboardPage extends Component {
                 <h2>{app.translator.trans('core.admin.dashboard.welcome_text')}</h2>
                 {new DashboardGraph()}
                 <div className="DashboardPage--Versions">
-                    <div className={error ? 'DashboardPage--Versions Error ' : 'DashboardPage--Versions Error hidden'}>
-                        <b>Github:</b> <i>{error}</i> <br/>
-                        {solution}
-                    </div>
                     <ul>
-                        <li className={extensionUpdates !== 0 && !error ? 'DashboardPage--ExtensionUpdates' : 'DashboardPage--ExtensionUpdates hidden'}>{Button.component({
-                            children: (!error) ? (extensionUpdates == 'checking' ? app.translator.trans('datitisev-dashboard.admin.dashboard.checking_updates') : ( extensionUpdates == 0 ? 'No Updates' : app.translator.trans('datitisev-dashboard.admin.dashboard.extension_updates', {number: extensionUpdates}) ) ): app.translator.trans('datitisev-dashboard.admin.dashboard.checking_updates_error'),
-                            className: 'Button Button--primary ' + (extensionUpdates == 0 ? 'disabled' : ''),
-                            disabled: extensionUpdates == 0,
-                            loading: extensionUpdates == 'checking'
-                        })}</li>
+                        <li>{Button.component({
+                                    children: app.translator.trans('datitisev-dashboard.admin.dashboard.extensionUpdates.checkUpdates_button'),
+                                    className: 'Button Button--primary ' + (extensionUpdates == 0 ? 'disabled' : ''),
+                                    disabled: false,
+                                    loading: false,
+                                    onclick: () => {
+                                        app.modal.show(new ExtensionUpdatesModal())
+                                    }
+                                })}
+                        </li>
                         <li>{app.translator.trans('datitisev-dashboard.admin.dashboard.flarum_version', {version: <strong>{app.forum.attribute('version')}</strong>})}</li>
                         <li>{app.translator.trans('datitisev-dashboard.admin.dashboard.php_version', {version: <strong>{app.settings['phpVersion']}</strong>})}</li>
-                        <li>{app.translator.trans('datitisev-dashboard.admin.dashboard.mysql_version', {version: <strong>{app.settings['mysqlVersion']}</strong>})}</li>
                     </ul>
                 </div>
             </div>

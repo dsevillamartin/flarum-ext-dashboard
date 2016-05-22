@@ -80,24 +80,6 @@
       }
     }
 
-    .DashboardPage--Versions.Error {
-      background-color: red;
-      padding: 0.75% 1%;
-      overflow: hidden;
-      //width: calc(100% - 20px);
-      color: white;
-      height: auto;
-      -webkit-transition: all 0.5s ease-in-out;
-      -moz-transition: all 0.5s ease-in-out;
-      -ms-transition: all 0.5s ease-in-out;
-      -o-transition: all 0.5s ease-in-out;
-      transition: all 0.5s ease-in-out;
-
-      &.hidden {
-        height: 0;
-        padding: 0;
-      }
-    }
 
 
 
@@ -122,10 +104,63 @@
 }
 
 
+.ExtensionUpdatesModal {
+
+  table {
+    margin-left: 5%;
+
+    tr {
+      td:first-child {
+        width: 40%;
+      }
+
+      td {
+        width: 25%
+      }
+    }
+  }
+
+  .ExtensionUpdatesModal--Error {
+    background-color: red;
+    padding: 0.75% 1%;
+    overflow: hidden;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius:5px;
+    //width: calc(100% - 20px);
+    color: white;
+    height: auto;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    margin-bottom: 25px;
+    word-wrap: break-word;
+
+    p {
+      word-wrap: break-word !important;
+    }
+
+    &.hidden {
+      height: 0;
+      padding: 0;
+    }
+  }
+
+}
+
 @media (max-width: 1006px) {
 
   .DashboardPage .container {
     padding-top: 20px;
   }
+
+  .ExtensionUpdatesModal {
+
+    .Modal-header {
+      padding-bottom: inherit;
+      border-bottom: none;
+    }
 
 }
