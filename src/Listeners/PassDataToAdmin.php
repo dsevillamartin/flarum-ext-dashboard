@@ -23,7 +23,7 @@ class PassDataToAdmin {
      */
     public function prepareUnserializedSettings(PrepareUnserializedSettings $event) {
         $event->settings['phpVersion'] = phpversion();
-        $event->settings['mysqlVersion'] = mysqli_get_server_info() ? mysqli_get_server_info() : "Unknown";
+        $event->settings['mysqlVersion'] = "Unknown";
     }
 
 }
