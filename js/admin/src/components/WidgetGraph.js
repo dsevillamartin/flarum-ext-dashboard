@@ -1,6 +1,6 @@
 import { extend } from 'flarum/extend';
-import Component from 'flarum/Component';
 import app from 'flarum/app';
+import DashboardSection from 'datitisev/dashboard/DashboardSection';
 
 var loadedStuff = false;
 var discussions = null;
@@ -8,15 +8,13 @@ var users = null;
 var posts = null;
 var warning = null;
 
-export default class DashboardGraph extends Component {
+export default class DashboardWidgetGraph extends DashboardSection {
 
-    init() {
-
+    config() {
         if (!loadedStuff) this.getGraphData();
-
     }
 
-    view() {
+    content() {
         const months = [
             app.translator.trans('datitisev-dashboard.admin.dashboard.months.january'),
             app.translator.trans('datitisev-dashboard.admin.dashboard.months.february'),
@@ -32,8 +30,7 @@ export default class DashboardGraph extends Component {
             app.translator.trans('datitisev-dashboard.admin.dashboard.months.december')
         ];
 
-        return (<div className="DashboardGraph">
-            <div className="DashboardGraph--Categories">
+        return (<div className="DashboardGraph--Categories">
                 <div className="DashboardGraph--Category Category--Users">
                     <span className="color"></span>
                     {app.translator.trans('datitisev-dashboard.admin.dashboard.graph.users')}<br />
@@ -49,24 +46,23 @@ export default class DashboardGraph extends Component {
                     {app.translator.trans('datitisev-dashboard.admin.dashboard.graph.posts')}<br />
                     <span className="number">{posts ? posts : '...'}</span>
                 </div>
-            </div>
-        </div>)
+            </div>)
+    }
+
+    className() {
+        return " DashboardGraph";
     }
 
     getGraphData() {
-
         loadedStuff = true;
-
-        app.store.find('discussions',{
+        app.store.find('discussions', {
             sort: '-startTime',
             page: {
                 limit: 1
             }
         }).then(discussion => {
-
             discussions = (discussion && discussion[0]) ? discussion[0].id() : '???';
             m.redraw();
-
 
             app.store.find('users', {
                 sort: '-joinTime',
@@ -117,6 +113,6 @@ export default class DashboardGraph extends Component {
         )
 
     }
-    
+
 }
 

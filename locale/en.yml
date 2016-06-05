@@ -35,15 +35,13 @@ datitisev-dashboard:
         noUpdates: "No Updates!"
         error: "Error Checking Updates!"
         addClientIdAndSecret:  => datitisev-dashboard.admin.settings.github_description
-        createApp:  => datitisev-dashboard.admin.settings.github_createApp
 
 
     ## Settings for the extension
     settings:
 
       github_heading: Github
-      github_description: "The Client ID and Client Secret of a Github app are necessary so you do not exceed the API rate limit."
-      github_createApp: "Create an app at https://github.com/settings/developers and introduce the credentials in the extension settings"
+      github_description: "The Client ID and Client Secret of a Github app are necessary so you do not exceed the API rate limit.<br\/\><br\/\> Create an app at Github Developers (https://github.com/settings/developers)<br\/\> and introduce the credentials in the extension settings."
       clientId_label: Client Id
       clientSecret_label: Client Secret
 

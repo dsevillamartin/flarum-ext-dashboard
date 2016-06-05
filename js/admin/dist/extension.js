@@ -21,160 +21,6 @@ System.register('datitisev/dashboard/changeDashboardPage', ['flarum/extend', 'fl
         }
     };
 });;
-System.register('datitisev/dashboard/components/DashboardGraph', ['flarum/extend', 'flarum/Component', 'flarum/app'], function (_export) {
-    'use strict';
-
-    var extend, Component, app, loadedStuff, discussions, users, posts, warning, DashboardGraph;
-    return {
-        setters: [function (_flarumExtend) {
-            extend = _flarumExtend.extend;
-        }, function (_flarumComponent) {
-            Component = _flarumComponent['default'];
-        }, function (_flarumApp) {
-            app = _flarumApp['default'];
-        }],
-        execute: function () {
-            loadedStuff = false;
-            discussions = null;
-            users = null;
-            posts = null;
-            warning = null;
-
-            DashboardGraph = (function (_Component) {
-                babelHelpers.inherits(DashboardGraph, _Component);
-
-                function DashboardGraph() {
-                    babelHelpers.classCallCheck(this, DashboardGraph);
-                    babelHelpers.get(Object.getPrototypeOf(DashboardGraph.prototype), 'constructor', this).apply(this, arguments);
-                }
-
-                babelHelpers.createClass(DashboardGraph, [{
-                    key: 'init',
-                    value: function init() {
-
-                        if (!loadedStuff) this.getGraphData();
-                    }
-                }, {
-                    key: 'view',
-                    value: function view() {
-                        var months = [app.translator.trans('datitisev-dashboard.admin.dashboard.months.january'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.february'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.march'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.april'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.may'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.june'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.july'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.august'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.september'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.october'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.november'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.december')];
-
-                        return m(
-                            'div',
-                            { className: 'DashboardGraph' },
-                            m(
-                                'div',
-                                { className: 'DashboardGraph--Categories' },
-                                m(
-                                    'div',
-                                    { className: 'DashboardGraph--Category Category--Users' },
-                                    m('span', { className: 'color' }),
-                                    app.translator.trans('datitisev-dashboard.admin.dashboard.graph.users'),
-                                    m('br', null),
-                                    m(
-                                        'span',
-                                        { className: 'number' },
-                                        users ? users : '...'
-                                    )
-                                ),
-                                m(
-                                    'div',
-                                    { className: 'DashboardGraph--Category Category--Discussions' },
-                                    m('span', { className: 'color' }),
-                                    app.translator.trans('datitisev-dashboard.admin.dashboard.graph.discussions'),
-                                    m('br', null),
-                                    m(
-                                        'span',
-                                        { className: 'number' },
-                                        discussions ? discussions : '...'
-                                    )
-                                ),
-                                m(
-                                    'div',
-                                    { className: 'DashboardGraph--Category Category--Posts' },
-                                    m('span', { className: 'color' }),
-                                    app.translator.trans('datitisev-dashboard.admin.dashboard.graph.posts'),
-                                    m('br', null),
-                                    m(
-                                        'span',
-                                        { className: 'number' },
-                                        posts ? posts : '...'
-                                    )
-                                )
-                            )
-                        );
-                    }
-                }, {
-                    key: 'getGraphData',
-                    value: function getGraphData() {
-
-                        loadedStuff = true;
-
-                        app.store.find('discussions', {
-                            sort: '-startTime',
-                            page: {
-                                limit: 1
-                            }
-                        }).then(function (discussion) {
-
-                            discussions = discussion && discussion[0] ? discussion[0].id() : '???';
-                            m.redraw();
-
-                            app.store.find('users', {
-                                sort: '-joinTime',
-                                page: {
-                                    limit: 1
-                                }
-                            }).then(function (user) {
-
-                                users = user.length && user[0] ? user[0].id() : '???';
-                                posts = '???';
-
-                                m.redraw();
-                            });
-
-                            setTimeout(function () {
-                                loadedStuff = false;
-                                discussions, users, posts = null;
-
-                                m.redraw();
-                            }, Math.round(parseInt(app.forum.attribute('datitisev-dashboard.graph.dataInterval') || '10')) * (60 * 1000));
-                        });
-                    }
-                }, {
-                    key: 'graphView',
-                    value: function graphView() {
-
-                        return m(
-                            'div',
-                            { className: 'DashboardGraph--Graph' },
-                            Object.keys(months).map(function (id) {
-                                var month = months[id];
-                                return m(
-                                    'div',
-                                    { className: 'DashboardGraph--Month' },
-                                    m(
-                                        'div',
-                                        { className: 'bars' },
-                                        'BAR'
-                                    ),
-                                    m(
-                                        'div',
-                                        { className: 'name' },
-                                        month
-                                    )
-                                );
-                            })
-                        );
-                    }
-                }]);
-                return DashboardGraph;
-            })(Component);
-
-            _export('default', DashboardGraph);
-        }
-    };
-});;
 System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend', 'flarum/Component', 'flarum/app', 'flarum/components/Button', 'datitisev/dashboard/components/DashboardGraph', 'datitisev/dashboard/components/ExtensionUpdatesModal'], function (_export) {
     'use strict';
 
@@ -675,6 +521,283 @@ System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum
         }
     };
 });;
+System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 'flarum/app', 'datitisev/dashboard/DashboardSection'], function (_export) {
+    'use strict';
+
+    var extend, app, DashboardSection, loadedStuff, discussions, users, posts, warning, DashboardWidgetGraph;
+    return {
+        setters: [function (_flarumExtend) {
+            extend = _flarumExtend.extend;
+        }, function (_flarumApp) {
+            app = _flarumApp['default'];
+        }, function (_datitisevDashboardDashboardSection) {
+            DashboardSection = _datitisevDashboardDashboardSection['default'];
+        }],
+        execute: function () {
+            loadedStuff = false;
+            discussions = null;
+            users = null;
+            posts = null;
+            warning = null;
+
+            DashboardWidgetGraph = (function (_DashboardSection) {
+                babelHelpers.inherits(DashboardWidgetGraph, _DashboardSection);
+
+                function DashboardWidgetGraph() {
+                    babelHelpers.classCallCheck(this, DashboardWidgetGraph);
+                    babelHelpers.get(Object.getPrototypeOf(DashboardWidgetGraph.prototype), 'constructor', this).apply(this, arguments);
+                }
+
+                babelHelpers.createClass(DashboardWidgetGraph, [{
+                    key: 'config',
+                    value: function config() {
+                        if (!loadedStuff) this.getGraphData();
+                    }
+                }, {
+                    key: 'content',
+                    value: function content() {
+                        var months = [app.translator.trans('datitisev-dashboard.admin.dashboard.months.january'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.february'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.march'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.april'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.may'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.june'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.july'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.august'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.september'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.october'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.november'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.december')];
+
+                        return m(
+                            'div',
+                            { className: 'DashboardGraph--Categories' },
+                            m(
+                                'div',
+                                { className: 'DashboardGraph--Category Category--Users' },
+                                m('span', { className: 'color' }),
+                                app.translator.trans('datitisev-dashboard.admin.dashboard.graph.users'),
+                                m('br', null),
+                                m(
+                                    'span',
+                                    { className: 'number' },
+                                    users ? users : '...'
+                                )
+                            ),
+                            m(
+                                'div',
+                                { className: 'DashboardGraph--Category Category--Discussions' },
+                                m('span', { className: 'color' }),
+                                app.translator.trans('datitisev-dashboard.admin.dashboard.graph.discussions'),
+                                m('br', null),
+                                m(
+                                    'span',
+                                    { className: 'number' },
+                                    discussions ? discussions : '...'
+                                )
+                            ),
+                            m(
+                                'div',
+                                { className: 'DashboardGraph--Category Category--Posts' },
+                                m('span', { className: 'color' }),
+                                app.translator.trans('datitisev-dashboard.admin.dashboard.graph.posts'),
+                                m('br', null),
+                                m(
+                                    'span',
+                                    { className: 'number' },
+                                    posts ? posts : '...'
+                                )
+                            )
+                        );
+                    }
+                }, {
+                    key: 'className',
+                    value: function className() {
+                        return " DashboardGraph";
+                    }
+                }, {
+                    key: 'getGraphData',
+                    value: function getGraphData() {
+                        loadedStuff = true;
+                        app.store.find('discussions', {
+                            sort: '-startTime',
+                            page: {
+                                limit: 1
+                            }
+                        }).then(function (discussion) {
+                            discussions = discussion && discussion[0] ? discussion[0].id() : '???';
+                            m.redraw();
+
+                            app.store.find('users', {
+                                sort: '-joinTime',
+                                page: {
+                                    limit: 1
+                                }
+                            }).then(function (user) {
+
+                                users = user.length && user[0] ? user[0].id() : '???';
+                                posts = '???';
+
+                                m.redraw();
+                            });
+
+                            setTimeout(function () {
+                                loadedStuff = false;
+                                discussions, users, posts = null;
+
+                                m.redraw();
+                            }, Math.round(parseInt(app.forum.attribute('datitisev-dashboard.graph.dataInterval') || '10')) * (60 * 1000));
+                        });
+                    }
+                }, {
+                    key: 'graphView',
+                    value: function graphView() {
+
+                        return m(
+                            'div',
+                            { className: 'DashboardGraph--Graph' },
+                            Object.keys(months).map(function (id) {
+                                var month = months[id];
+                                return m(
+                                    'div',
+                                    { className: 'DashboardGraph--Month' },
+                                    m(
+                                        'div',
+                                        { className: 'bars' },
+                                        'BAR'
+                                    ),
+                                    m(
+                                        'div',
+                                        { className: 'name' },
+                                        month
+                                    )
+                                );
+                            })
+                        );
+                    }
+                }]);
+                return DashboardWidgetGraph;
+            })(DashboardSection);
+
+            _export('default', DashboardWidgetGraph);
+        }
+    };
+});;
+System.register('datitisev/dashboard/components/WidgetVersions', ['flarum/extend', 'flarum/app', 'flarum/components/Button', 'datitisev/dashboard/DashboardSection', 'datitisev/dashboard/components/ExtensionUpdatesModal'], function (_export) {
+    'use strict';
+
+    var extend, app, Button, DashboardSection, ExtensionUpdatesModal, DashboardWidgetVersions;
+    return {
+        setters: [function (_flarumExtend) {
+            extend = _flarumExtend.extend;
+        }, function (_flarumApp) {
+            app = _flarumApp['default'];
+        }, function (_flarumComponentsButton) {
+            Button = _flarumComponentsButton['default'];
+        }, function (_datitisevDashboardDashboardSection) {
+            DashboardSection = _datitisevDashboardDashboardSection['default'];
+        }, function (_datitisevDashboardComponentsExtensionUpdatesModal) {
+            ExtensionUpdatesModal = _datitisevDashboardComponentsExtensionUpdatesModal['default'];
+        }],
+        execute: function () {
+            DashboardWidgetVersions = (function (_DashboardSection) {
+                babelHelpers.inherits(DashboardWidgetVersions, _DashboardSection);
+
+                function DashboardWidgetVersions() {
+                    babelHelpers.classCallCheck(this, DashboardWidgetVersions);
+                    babelHelpers.get(Object.getPrototypeOf(DashboardWidgetVersions.prototype), 'constructor', this).apply(this, arguments);
+                }
+
+                babelHelpers.createClass(DashboardWidgetVersions, [{
+                    key: 'content',
+                    value: function content() {
+
+                        return m(
+                            'ul',
+                            null,
+                            m(
+                                'li',
+                                null,
+                                Button.component({
+                                    children: app.translator.trans('datitisev-dashboard.admin.dashboard.extensionUpdates.checkUpdates_button'),
+                                    className: 'Button Button--primary',
+                                    onclick: function onclick() {
+                                        app.modal.show(new ExtensionUpdatesModal());
+                                    }
+                                })
+                            ),
+                            m(
+                                'li',
+                                null,
+                                app.translator.trans('datitisev-dashboard.admin.dashboard.flarum_version', { version: m(
+                                        'strong',
+                                        null,
+                                        app.forum.attribute('version')
+                                    ) })
+                            ),
+                            m(
+                                'li',
+                                null,
+                                app.translator.trans('datitisev-dashboard.admin.dashboard.php_version', { version: m(
+                                        'strong',
+                                        null,
+                                        app.settings['phpVersion']
+                                    ) })
+                            )
+                        );
+                    }
+                }, {
+                    key: 'className',
+                    value: function className() {
+                        return " Versions";
+                    }
+                }]);
+                return DashboardWidgetVersions;
+            })(DashboardSection);
+
+            _export('default', DashboardWidgetVersions);
+        }
+    };
+});;
+System.register('datitisev/dashboard/DashboardSection', ['flarum/extend', 'flarum/Component'], function (_export) {
+    'use strict';
+
+    var extend, Component, DashboardSection;
+    return {
+        setters: [function (_flarumExtend) {
+            extend = _flarumExtend.extend;
+        }, function (_flarumComponent) {
+            Component = _flarumComponent['default'];
+        }],
+        execute: function () {
+            DashboardSection = (function (_Component) {
+                babelHelpers.inherits(DashboardSection, _Component);
+
+                function DashboardSection() {
+                    babelHelpers.classCallCheck(this, DashboardSection);
+                    babelHelpers.get(Object.getPrototypeOf(DashboardSection.prototype), 'constructor', this).apply(this, arguments);
+                }
+
+                babelHelpers.createClass(DashboardSection, [{
+                    key: 'init',
+                    value: function init() {
+                        if (this.config) this.config();
+                    }
+                }, {
+                    key: 'view',
+                    value: function view() {
+                        return m(
+                            'div',
+                            { className: 'DashboardPage--Section ' + (this.className ? this.className() : '') },
+                            this.content()
+                        );
+                    }
+                }, {
+                    key: 'content',
+                    value: function content() {
+                        return m(
+                            'span',
+                            null,
+                            'Something'
+                        );
+                    }
+                }]);
+                return DashboardSection;
+            })(Component);
+
+            _export('default', DashboardSection);
+        }
+    };
+});;
 System.register('datitisev/dashboard/main', ['flarum/extend', 'flarum/app', 'datitisev/dashboard/changeDashboardPage', 'datitisev/dashboard/components/DashboardSettingsModal'], function (_export) {
     'use strict';
 
@@ -699,6 +822,160 @@ System.register('datitisev/dashboard/main', ['flarum/extend', 'flarum/app', 'dat
                     return app.modal.show(new DashboardSettingsModal());
                 };
             });
+        }
+    };
+});;
+System.register('datitisev/dashboard/components/DashboardGraph', ['flarum/extend', 'flarum/Component', 'flarum/app'], function (_export) {
+    'use strict';
+
+    var extend, Component, app, loadedStuff, discussions, users, posts, warning, DashboardGraph;
+    return {
+        setters: [function (_flarumExtend) {
+            extend = _flarumExtend.extend;
+        }, function (_flarumComponent) {
+            Component = _flarumComponent['default'];
+        }, function (_flarumApp) {
+            app = _flarumApp['default'];
+        }],
+        execute: function () {
+            loadedStuff = false;
+            discussions = null;
+            users = null;
+            posts = null;
+            warning = null;
+
+            DashboardGraph = (function (_Component) {
+                babelHelpers.inherits(DashboardGraph, _Component);
+
+                function DashboardGraph() {
+                    babelHelpers.classCallCheck(this, DashboardGraph);
+                    babelHelpers.get(Object.getPrototypeOf(DashboardGraph.prototype), 'constructor', this).apply(this, arguments);
+                }
+
+                babelHelpers.createClass(DashboardGraph, [{
+                    key: 'init',
+                    value: function init() {
+
+                        if (!loadedStuff) this.getGraphData();
+                    }
+                }, {
+                    key: 'view',
+                    value: function view() {
+                        var months = [app.translator.trans('datitisev-dashboard.admin.dashboard.months.january'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.february'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.march'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.april'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.may'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.june'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.july'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.august'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.september'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.october'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.november'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.december')];
+
+                        return m(
+                            'div',
+                            { className: 'DashboardGraph' },
+                            m(
+                                'div',
+                                { className: 'DashboardGraph--Categories' },
+                                m(
+                                    'div',
+                                    { className: 'DashboardGraph--Category Category--Users' },
+                                    m('span', { className: 'color' }),
+                                    app.translator.trans('datitisev-dashboard.admin.dashboard.graph.users'),
+                                    m('br', null),
+                                    m(
+                                        'span',
+                                        { className: 'number' },
+                                        users ? users : '...'
+                                    )
+                                ),
+                                m(
+                                    'div',
+                                    { className: 'DashboardGraph--Category Category--Discussions' },
+                                    m('span', { className: 'color' }),
+                                    app.translator.trans('datitisev-dashboard.admin.dashboard.graph.discussions'),
+                                    m('br', null),
+                                    m(
+                                        'span',
+                                        { className: 'number' },
+                                        discussions ? discussions : '...'
+                                    )
+                                ),
+                                m(
+                                    'div',
+                                    { className: 'DashboardGraph--Category Category--Posts' },
+                                    m('span', { className: 'color' }),
+                                    app.translator.trans('datitisev-dashboard.admin.dashboard.graph.posts'),
+                                    m('br', null),
+                                    m(
+                                        'span',
+                                        { className: 'number' },
+                                        posts ? posts : '...'
+                                    )
+                                )
+                            )
+                        );
+                    }
+                }, {
+                    key: 'getGraphData',
+                    value: function getGraphData() {
+
+                        loadedStuff = true;
+
+                        app.store.find('discussions', {
+                            sort: '-startTime',
+                            page: {
+                                limit: 1
+                            }
+                        }).then(function (discussion) {
+
+                            discussions = discussion && discussion[0] ? discussion[0].id() : '???';
+                            m.redraw();
+
+                            app.store.find('users', {
+                                sort: '-joinTime',
+                                page: {
+                                    limit: 1
+                                }
+                            }).then(function (user) {
+
+                                users = user.length && user[0] ? user[0].id() : '???';
+                                posts = '???';
+
+                                m.redraw();
+                            });
+
+                            setTimeout(function () {
+                                loadedStuff = false;
+                                discussions, users, posts = null;
+
+                                m.redraw();
+                            }, Math.round(parseInt(app.forum.attribute('datitisev-dashboard.graph.dataInterval') || '10')) * (60 * 1000));
+                        });
+                    }
+                }, {
+                    key: 'graphView',
+                    value: function graphView() {
+
+                        return m(
+                            'div',
+                            { className: 'DashboardGraph--Graph' },
+                            Object.keys(months).map(function (id) {
+                                var month = months[id];
+                                return m(
+                                    'div',
+                                    { className: 'DashboardGraph--Month' },
+                                    m(
+                                        'div',
+                                        { className: 'bars' },
+                                        'BAR'
+                                    ),
+                                    m(
+                                        'div',
+                                        { className: 'name' },
+                                        month
+                                    )
+                                );
+                            })
+                        );
+                    }
+                }]);
+                return DashboardGraph;
+            })(Component);
+
+            _export('default', DashboardGraph);
         }
     };
 });

@@ -2,7 +2,6 @@
 
 namespace Datitisev\Dashboard;
 
-use Flarum\Foundation\Application;
 use Illuminate\Contracts\Events\Dispatcher;
 
 return function (Dispatcher $events) {

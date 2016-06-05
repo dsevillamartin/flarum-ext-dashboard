@@ -1,13 +1,8 @@
 import { extend } from 'flarum/extend';
-import DashboardPage from 'flarum/components/DashboardPage';
-
 import NewDashboardPage from 'datitisev/dashboard/components/DashboardPage';
 
 export default function () {
+    
+    app.routes.dashboard = {path: '/', component: NewDashboardPage.component()};
 
-    DashboardPage.prototype.view = () => {
-        
-        return new NewDashboardPage();
-
-    }
 }
