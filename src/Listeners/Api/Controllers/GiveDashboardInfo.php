@@ -1,14 +1,21 @@
 <?php
 
+/*
+ * This file is part of datitisev/flarum-ext-admindashboard
+ *
+ * (c) David Sevilla Martín <dsevilla192@icloud.com>
+ *
+ * For the full copyright and license information, please view the MIT license
+ */
+
 namespace Datitisev\Dashboard\Api\Controllers;
 
-use Flarum\Api\Controller\AbstractResourceController;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 
-class GiveDashboardInfo {
-
+class GiveDashboardInfo
+{
     /**
      * The serializer instance for this request.
      *
@@ -34,6 +41,7 @@ class GiveDashboardInfo {
      *
      * @param ServerRequestInterface $request
      * @param Document               $document
+     *
      * @return mixed
      */
     protected function data(ServerRequestInterface $request, Document $document)
@@ -41,9 +49,7 @@ class GiveDashboardInfo {
         $actor = $request->getAttribute('actor');
 
         return [
-            phpversion()
+            phpversion(),
         ];
-
     }
-
 }

@@ -10,4 +10,5 @@ app.initializers.add('datitisev/dashboard', () => {
     changeDashboardPage();
 
     app.extensionSettings['datitisev-dashboard'] = () => app.modal.show(new DashboardSettingsModal());
+
 });

@@ -1,206 +1,40 @@
-System.register('datitisev/dashboard/changeDashboardPage', ['flarum/extend', 'flarum/components/DashboardPage', 'datitisev/dashboard/components/DashboardPage'], function (_export) {
+System.register('datitisev/dashboard/changeDashboardPage', ['flarum/extend', 'datitisev/dashboard/components/DashboardPage'], function (_export) {
     'use strict';
 
-    var extend, DashboardPage, NewDashboardPage;
+    var extend, NewDashboardPage;
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
-        }, function (_flarumComponentsDashboardPage) {
-            DashboardPage = _flarumComponentsDashboardPage['default'];
         }, function (_datitisevDashboardComponentsDashboardPage) {
             NewDashboardPage = _datitisevDashboardComponentsDashboardPage['default'];
         }],
         execute: function () {
             _export('default', function () {
 
-                DashboardPage.prototype.view = function () {
-
-                    return new NewDashboardPage();
-                };
+                app.routes.dashboard = { path: '/', component: NewDashboardPage.component() };
             });
         }
     };
 });;
-System.register('datitisev/dashboard/components/DashboardGraph', ['flarum/extend', 'flarum/Component', 'flarum/app'], function (_export) {
+System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend', 'flarum/components/Page', 'flarum/utils/ItemList', 'datitisev/dashboard/components/WidgetGraph', 'datitisev/dashboard/components/WidgetVersions'], function (_export) {
     'use strict';
 
-    var extend, Component, app, loadedStuff, discussions, users, posts, warning, DashboardGraph;
+    var extend, Page, ItemList, WidgetGraph, WidgetVersions, DashboardPage;
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
-        }, function (_flarumComponent) {
-            Component = _flarumComponent['default'];
-        }, function (_flarumApp) {
-            app = _flarumApp['default'];
+        }, function (_flarumComponentsPage) {
+            Page = _flarumComponentsPage['default'];
+        }, function (_flarumUtilsItemList) {
+            ItemList = _flarumUtilsItemList['default'];
+        }, function (_datitisevDashboardComponentsWidgetGraph) {
+            WidgetGraph = _datitisevDashboardComponentsWidgetGraph['default'];
+        }, function (_datitisevDashboardComponentsWidgetVersions) {
+            WidgetVersions = _datitisevDashboardComponentsWidgetVersions['default'];
         }],
         execute: function () {
-            loadedStuff = false;
-            discussions = null;
-            users = null;
-            posts = null;
-            warning = null;
-
-            DashboardGraph = (function (_Component) {
-                babelHelpers.inherits(DashboardGraph, _Component);
-
-                function DashboardGraph() {
-                    babelHelpers.classCallCheck(this, DashboardGraph);
-                    babelHelpers.get(Object.getPrototypeOf(DashboardGraph.prototype), 'constructor', this).apply(this, arguments);
-                }
-
-                babelHelpers.createClass(DashboardGraph, [{
-                    key: 'init',
-                    value: function init() {
-
-                        if (!loadedStuff) this.getGraphData();
-                    }
-                }, {
-                    key: 'view',
-                    value: function view() {
-                        var months = [app.translator.trans('datitisev-dashboard.admin.dashboard.months.january'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.february'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.march'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.april'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.may'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.june'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.july'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.august'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.september'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.october'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.november'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.december')];
-
-                        return m(
-                            'div',
-                            { className: 'DashboardGraph' },
-                            m(
-                                'div',
-                                { className: 'DashboardGraph--Categories' },
-                                m(
-                                    'div',
-                                    { className: 'DashboardGraph--Category Category--Users' },
-                                    m('span', { className: 'color' }),
-                                    app.translator.trans('datitisev-dashboard.admin.dashboard.graph.users'),
-                                    m('br', null),
-                                    m(
-                                        'span',
-                                        { className: 'number' },
-                                        users ? users : '...'
-                                    )
-                                ),
-                                m(
-                                    'div',
-                                    { className: 'DashboardGraph--Category Category--Discussions' },
-                                    m('span', { className: 'color' }),
-                                    app.translator.trans('datitisev-dashboard.admin.dashboard.graph.discussions'),
-                                    m('br', null),
-                                    m(
-                                        'span',
-                                        { className: 'number' },
-                                        discussions ? discussions : '...'
-                                    )
-                                ),
-                                m(
-                                    'div',
-                                    { className: 'DashboardGraph--Category Category--Posts' },
-                                    m('span', { className: 'color' }),
-                                    app.translator.trans('datitisev-dashboard.admin.dashboard.graph.posts'),
-                                    m('br', null),
-                                    m(
-                                        'span',
-                                        { className: 'number' },
-                                        posts ? posts : '...'
-                                    )
-                                )
-                            )
-                        );
-                    }
-                }, {
-                    key: 'getGraphData',
-                    value: function getGraphData() {
-
-                        loadedStuff = true;
-
-                        app.store.find('discussions', {
-                            sort: '-startTime',
-                            page: {
-                                limit: 1
-                            }
-                        }).then(function (discussion) {
-
-                            discussions = discussion && discussion[0] ? discussion[0].id() : '???';
-                            m.redraw();
-
-                            app.store.find('users', {
-                                sort: '-joinTime',
-                                page: {
-                                    limit: 1
-                                }
-                            }).then(function (user) {
-
-                                users = user.length && user[0] ? user[0].id() : '???';
-                                posts = '???';
-
-                                m.redraw();
-                            });
-
-                            setTimeout(function () {
-                                loadedStuff = false;
-                                discussions, users, posts = null;
-
-                                m.redraw();
-                            }, Math.round(parseInt(app.forum.attribute('datitisev-dashboard.graph.dataInterval') || '10')) * (60 * 1000));
-                        });
-                    }
-                }, {
-                    key: 'graphView',
-                    value: function graphView() {
-
-                        return m(
-                            'div',
-                            { className: 'DashboardGraph--Graph' },
-                            Object.keys(months).map(function (id) {
-                                var month = months[id];
-                                return m(
-                                    'div',
-                                    { className: 'DashboardGraph--Month' },
-                                    m(
-                                        'div',
-                                        { className: 'bars' },
-                                        'BAR'
-                                    ),
-                                    m(
-                                        'div',
-                                        { className: 'name' },
-                                        month
-                                    )
-                                );
-                            })
-                        );
-                    }
-                }]);
-                return DashboardGraph;
-            })(Component);
-
-            _export('default', DashboardGraph);
-        }
-    };
-});;
-System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend', 'flarum/Component', 'flarum/app', 'flarum/components/Button', 'datitisev/dashboard/components/DashboardGraph', 'datitisev/dashboard/components/ExtensionUpdatesModal'], function (_export) {
-    'use strict';
-
-    var extend, Component, app, Button, DashboardGraph, ExtensionUpdatesModal, error, solution, loadedUpdates, extensionUpdates, DashboardPage;
-    return {
-        setters: [function (_flarumExtend) {
-            extend = _flarumExtend.extend;
-        }, function (_flarumComponent) {
-            Component = _flarumComponent['default'];
-        }, function (_flarumApp) {
-            app = _flarumApp['default'];
-        }, function (_flarumComponentsButton) {
-            Button = _flarumComponentsButton['default'];
-        }, function (_datitisevDashboardComponentsDashboardGraph) {
-            DashboardGraph = _datitisevDashboardComponentsDashboardGraph['default'];
-        }, function (_datitisevDashboardComponentsExtensionUpdatesModal) {
-            ExtensionUpdatesModal = _datitisevDashboardComponentsExtensionUpdatesModal['default'];
-        }],
-        execute: function () {
-            error = null;
-            solution = null;
-            loadedUpdates = false;
-            extensionUpdates = 'checking';
-
-            DashboardPage = (function (_Component) {
-                babelHelpers.inherits(DashboardPage, _Component);
+            DashboardPage = (function (_Page) {
+                babelHelpers.inherits(DashboardPage, _Page);
 
                 function DashboardPage() {
                     babelHelpers.classCallCheck(this, DashboardPage);
@@ -208,11 +42,10 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
                 }
 
                 babelHelpers.createClass(DashboardPage, [{
-                    key: 'init',
-                    value: function init() {}
-                }, {
                     key: 'view',
                     value: function view() {
+                        var _this = this;
+
                         return m(
                             'div',
                             { className: 'DashboardPage' },
@@ -224,125 +57,26 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
                                     null,
                                     app.translator.trans('core.admin.dashboard.welcome_text')
                                 ),
-                                new DashboardGraph(),
-                                m(
-                                    'div',
-                                    { className: 'DashboardPage--Versions' },
-                                    m(
-                                        'ul',
-                                        null,
-                                        m(
-                                            'li',
-                                            null,
-                                            Button.component({
-                                                children: app.translator.trans('datitisev-dashboard.admin.dashboard.extensionUpdates.checkUpdates_button'),
-                                                className: 'Button Button--primary ' + (extensionUpdates == 0 ? 'disabled' : ''),
-                                                disabled: false,
-                                                loading: false,
-                                                onclick: function onclick() {
-                                                    app.modal.show(new ExtensionUpdatesModal());
-                                                }
-                                            })
-                                        ),
-                                        m(
-                                            'li',
-                                            null,
-                                            app.translator.trans('datitisev-dashboard.admin.dashboard.flarum_version', { version: m(
-                                                    'strong',
-                                                    null,
-                                                    app.forum.attribute('version')
-                                                ) })
-                                        ),
-                                        m(
-                                            'li',
-                                            null,
-                                            app.translator.trans('datitisev-dashboard.admin.dashboard.php_version', { version: m(
-                                                    'strong',
-                                                    null,
-                                                    app.settings['phpVersion']
-                                                ) })
-                                        )
-                                    )
-                                )
+                                Object.keys(this.items().items).map(function (id) {
+                                    var section = _this.items().get(id);
+                                    if (section) return new section();
+                                })
                             )
                         );
                     }
                 }, {
-                    key: 'getPackagesAndVersions',
-                    value: function getPackagesAndVersions() {
-                        var _this = this;
+                    key: 'items',
+                    value: function items() {
+                        var items = new ItemList();
 
-                        loadedUpdates = true;
+                        items.add('countData', WidgetGraph);
+                        items.add('versions', WidgetVersions);
 
-                        return new Promise(function (resolve, reject) {
-
-                            var extensions = app.extensions;
-                            var extensionNames = Object.getOwnPropertyNames(extensions);
-                            var needsUpdate = [];
-
-                            extensionNames.forEach(function (el, i, o) {
-
-                                if (!extensions[el] || !extensions[el].source) return false;
-
-                                var currentExtension = extensions[el];
-
-                                var source = currentExtension.source.url.replace('github.com', 'api.github.com/repos');
-
-                                if (source.indexOf('github.com') >= 0) {
-                                    source = 'https://api.github.com/repos/' + currentExtension.name + '/releases';
-                                    source += '?client_id=' + app.forum.attribute('datitisev-dashboard.github.client_id') + '&client_secret=' + app.forum.attribute('datitisev-dashboard.github.client_secret');
-                                } else return false;
-
-                                _this.request({
-                                    url: source,
-                                    method: 'GET'
-                                }).then(function (data) {
-
-                                    if (data) {
-                                        var newVersion = data && data.length ? data[0].tag_name : null;
-                                        var version = currentExtension.version;
-                                        // let version = 'some_other_version';
-
-                                        if (newVersion && version != newVersion && version !== 'dev-master' && version != '@dev') {
-                                            Promise.resolve(needsUpdate.push({
-                                                name: currentExtension.name,
-                                                oldVersion: version,
-                                                newVersion: newVersion
-                                            })).then(function () {
-                                                if (o.length - 1 == i) {
-                                                    resolve(needsUpdate);
-                                                }
-                                            });
-                                        }
-                                    }
-
-                                    if (o.length - 1 == i) {
-                                        resolve(needsUpdate);
-                                    }
-                                })['catch'](function (err) {
-
-                                    var warning = err.message.indexOf('rate limit') >= 0 ? err.message.substr(0, 38) : err.message;
-
-                                    reject(warning);
-                                });
-                            });
-                        });
-                    }
-                }, {
-                    key: 'request',
-                    value: function request(par) {
-
-                        return new Promise(function (resolve, reject) {
-
-                            m.request({
-                                method: par.method ? par.method : "GET",
-                                url: par.url
-                            }).then(resolve)['catch'](reject);
-                        });
+                        return items;
                     }
                 }]);
                 return DashboardPage;
-            })(Component);
+            })(Page);
 
             _export('default', DashboardPage);
         }
@@ -541,22 +275,17 @@ System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum
                                 m(
                                     'p',
                                     null,
-                                    this.error
+                                    m.trust(this.error)
                                 ),
                                 m(
                                     'p',
                                     null,
-                                    this.solution
-                                ),
-                                m(
-                                    'p',
-                                    null,
-                                    app.translator.trans('datitisev-dashboard.admin.settings.github_createApp')
+                                    m.trust(this.solution)
                                 )
                             ),
                             m(
                                 'div',
-                                { style: this.extensionUpdates == 0 ? '' : 'display: none' },
+                                { style: this.extensionUpdates == 0 && !this.error && !this.loading ? '' : 'display: none' },
                                 m(
                                     'h3',
                                     null,
@@ -579,7 +308,7 @@ System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum
 
                             var currentExtension = extensions[el];
 
-                            var source = currentExtension.source.url.replace('github.com', 'api.github.com/repos');
+                            var source = currentExtension.source.url.replace('.git', '').replace('github.com', 'api.github.com/repos');
 
                             if (source.indexOf('github.com') >= 0) {
                                 source = 'https://api.github.com/repos/' + currentExtension.name + '/releases';
@@ -629,20 +358,20 @@ System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum
                                 }
                             })['catch'](function (err) {
 
-                                try {
+                                if (!err || typeof err != 'object' || !err.message) return false;
 
-                                    var error = err.message.indexOf('rate limit') >= 0 ? err.message.substr(0, 38) : err.message;
-                                    var solution = err.message.indexOf('rate limit') >= 0 ? app.translator.trans('datitisev-dashboard.admin.dashboard.extensionUpdates.addClientIdAndSecret') : '';
-
-                                    _this2.error = 'GitHub: ' + error;
-                                    _this2.solution = solution;
-
+                                var error = err.message.indexOf('rate limit') >= 0 ? err.message.substr(0, 38) : err.message;
+                                if (error == 'Not Found' && o.length - 1 == i) {
                                     _this2.loading = false;
-
                                     m.redraw();
-                                } catch (err) {
-                                    console.error(err);
-                                }
+                                } else if (error == 'Not Found') return false;
+
+                                var solution = err.message.indexOf('rate limit') >= 0 ? app.translator.trans('datitisev-dashboard.admin.dashboard.extensionUpdates.addClientIdAndSecret') : '';
+
+                                _this2.error = '<b>GitHub:</b> ' + error;
+                                _this2.solution = solution;
+                                _this2.loading = false;
+                                m.redraw();
                             });
                         });
 
@@ -652,15 +381,15 @@ System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum
                             _this2.extensionUpdates = 0;
                             _this2.needsUpdate = [];
                             _this2.loading = false;
+                            _this2.getPackagesAndVersions();
                             m.redraw();
-                        }, 20000);
+                        }, 60000);
                     }
                 }, {
                     key: 'request',
                     value: function request(par) {
 
                         return new Promise(function (resolve, reject) {
-
                             m.request({
                                 method: par.method ? par.method : "GET",
                                 url: par.url
@@ -672,6 +401,283 @@ System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum
             })(Modal);
 
             _export('default', ExtensionUpdatesModal);
+        }
+    };
+});;
+System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 'flarum/app', 'datitisev/dashboard/DashboardSection'], function (_export) {
+    'use strict';
+
+    var extend, app, DashboardSection, loadedStuff, discussions, users, posts, warning, DashboardWidgetGraph;
+    return {
+        setters: [function (_flarumExtend) {
+            extend = _flarumExtend.extend;
+        }, function (_flarumApp) {
+            app = _flarumApp['default'];
+        }, function (_datitisevDashboardDashboardSection) {
+            DashboardSection = _datitisevDashboardDashboardSection['default'];
+        }],
+        execute: function () {
+            loadedStuff = false;
+            discussions = null;
+            users = null;
+            posts = null;
+            warning = null;
+
+            DashboardWidgetGraph = (function (_DashboardSection) {
+                babelHelpers.inherits(DashboardWidgetGraph, _DashboardSection);
+
+                function DashboardWidgetGraph() {
+                    babelHelpers.classCallCheck(this, DashboardWidgetGraph);
+                    babelHelpers.get(Object.getPrototypeOf(DashboardWidgetGraph.prototype), 'constructor', this).apply(this, arguments);
+                }
+
+                babelHelpers.createClass(DashboardWidgetGraph, [{
+                    key: 'config',
+                    value: function config() {
+                        if (!loadedStuff) this.getGraphData();
+                    }
+                }, {
+                    key: 'content',
+                    value: function content() {
+                        var months = [app.translator.trans('datitisev-dashboard.admin.dashboard.months.january'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.february'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.march'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.april'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.may'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.june'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.july'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.august'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.september'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.october'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.november'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.december')];
+
+                        return m(
+                            'div',
+                            { className: 'DashboardGraph--Categories' },
+                            m(
+                                'div',
+                                { className: 'DashboardGraph--Category Category--Users' },
+                                m('span', { className: 'color' }),
+                                app.translator.trans('datitisev-dashboard.admin.dashboard.graph.users'),
+                                m('br', null),
+                                m(
+                                    'span',
+                                    { className: 'number' },
+                                    users ? users : '...'
+                                )
+                            ),
+                            m(
+                                'div',
+                                { className: 'DashboardGraph--Category Category--Discussions' },
+                                m('span', { className: 'color' }),
+                                app.translator.trans('datitisev-dashboard.admin.dashboard.graph.discussions'),
+                                m('br', null),
+                                m(
+                                    'span',
+                                    { className: 'number' },
+                                    discussions ? discussions : '...'
+                                )
+                            ),
+                            m(
+                                'div',
+                                { className: 'DashboardGraph--Category Category--Posts' },
+                                m('span', { className: 'color' }),
+                                app.translator.trans('datitisev-dashboard.admin.dashboard.graph.posts'),
+                                m('br', null),
+                                m(
+                                    'span',
+                                    { className: 'number' },
+                                    posts ? posts : '...'
+                                )
+                            )
+                        );
+                    }
+                }, {
+                    key: 'className',
+                    value: function className() {
+                        return "DashboardGraph";
+                    }
+                }, {
+                    key: 'getGraphData',
+                    value: function getGraphData() {
+                        loadedStuff = true;
+                        app.store.find('discussions', {
+                            sort: '-startTime',
+                            page: {
+                                limit: 1
+                            }
+                        }).then(function (discussion) {
+                            discussions = discussion && discussion[0] ? discussion[0].id() : '???';
+                            m.redraw();
+
+                            app.store.find('users', {
+                                sort: '-joinTime',
+                                page: {
+                                    limit: 1
+                                }
+                            }).then(function (user) {
+
+                                users = user.length && user[0] ? user[0].id() : '???';
+                                posts = '???';
+
+                                m.redraw();
+                            });
+
+                            setTimeout(function () {
+                                loadedStuff = false;
+                                discussions, users, posts = null;
+
+                                m.redraw();
+                            }, Math.round(parseInt(app.forum.attribute('datitisev-dashboard.graph.dataInterval') || '10')) * (60 * 1000));
+                        });
+                    }
+                }, {
+                    key: 'graphView',
+                    value: function graphView() {
+
+                        return m(
+                            'div',
+                            { className: 'DashboardGraph--Graph' },
+                            Object.keys(months).map(function (id) {
+                                var month = months[id];
+                                return m(
+                                    'div',
+                                    { className: 'DashboardGraph--Month' },
+                                    m(
+                                        'div',
+                                        { className: 'bars' },
+                                        'BAR'
+                                    ),
+                                    m(
+                                        'div',
+                                        { className: 'name' },
+                                        month
+                                    )
+                                );
+                            })
+                        );
+                    }
+                }]);
+                return DashboardWidgetGraph;
+            })(DashboardSection);
+
+            _export('default', DashboardWidgetGraph);
+        }
+    };
+});;
+System.register('datitisev/dashboard/components/WidgetVersions', ['flarum/extend', 'flarum/app', 'flarum/components/Button', 'datitisev/dashboard/DashboardSection', 'datitisev/dashboard/components/ExtensionUpdatesModal'], function (_export) {
+    'use strict';
+
+    var extend, app, Button, DashboardSection, ExtensionUpdatesModal, DashboardWidgetVersions;
+    return {
+        setters: [function (_flarumExtend) {
+            extend = _flarumExtend.extend;
+        }, function (_flarumApp) {
+            app = _flarumApp['default'];
+        }, function (_flarumComponentsButton) {
+            Button = _flarumComponentsButton['default'];
+        }, function (_datitisevDashboardDashboardSection) {
+            DashboardSection = _datitisevDashboardDashboardSection['default'];
+        }, function (_datitisevDashboardComponentsExtensionUpdatesModal) {
+            ExtensionUpdatesModal = _datitisevDashboardComponentsExtensionUpdatesModal['default'];
+        }],
+        execute: function () {
+            DashboardWidgetVersions = (function (_DashboardSection) {
+                babelHelpers.inherits(DashboardWidgetVersions, _DashboardSection);
+
+                function DashboardWidgetVersions() {
+                    babelHelpers.classCallCheck(this, DashboardWidgetVersions);
+                    babelHelpers.get(Object.getPrototypeOf(DashboardWidgetVersions.prototype), 'constructor', this).apply(this, arguments);
+                }
+
+                babelHelpers.createClass(DashboardWidgetVersions, [{
+                    key: 'content',
+                    value: function content() {
+
+                        return m(
+                            'ul',
+                            null,
+                            m(
+                                'li',
+                                null,
+                                Button.component({
+                                    children: app.translator.trans('datitisev-dashboard.admin.dashboard.extensionUpdates.checkUpdates_button'),
+                                    className: 'Button Button--primary',
+                                    onclick: function onclick() {
+                                        app.modal.show(new ExtensionUpdatesModal());
+                                    }
+                                })
+                            ),
+                            m(
+                                'li',
+                                null,
+                                app.translator.trans('datitisev-dashboard.admin.dashboard.flarum_version', { version: m(
+                                        'strong',
+                                        null,
+                                        app.forum.attribute('version')
+                                    ) })
+                            ),
+                            m(
+                                'li',
+                                null,
+                                app.translator.trans('datitisev-dashboard.admin.dashboard.php_version', { version: m(
+                                        'strong',
+                                        null,
+                                        app.settings['phpVersion']
+                                    ) })
+                            )
+                        );
+                    }
+                }, {
+                    key: 'className',
+                    value: function className() {
+                        return "Versions";
+                    }
+                }]);
+                return DashboardWidgetVersions;
+            })(DashboardSection);
+
+            _export('default', DashboardWidgetVersions);
+        }
+    };
+});;
+System.register('datitisev/dashboard/DashboardSection', ['flarum/extend', 'flarum/Component'], function (_export) {
+    'use strict';
+
+    var extend, Component, DashboardSection;
+    return {
+        setters: [function (_flarumExtend) {
+            extend = _flarumExtend.extend;
+        }, function (_flarumComponent) {
+            Component = _flarumComponent['default'];
+        }],
+        execute: function () {
+            DashboardSection = (function (_Component) {
+                babelHelpers.inherits(DashboardSection, _Component);
+
+                function DashboardSection() {
+                    babelHelpers.classCallCheck(this, DashboardSection);
+                    babelHelpers.get(Object.getPrototypeOf(DashboardSection.prototype), 'constructor', this).apply(this, arguments);
+                }
+
+                babelHelpers.createClass(DashboardSection, [{
+                    key: 'init',
+                    value: function init() {
+                        if (this.config) this.config();
+                    }
+                }, {
+                    key: 'view',
+                    value: function view() {
+                        return m(
+                            'div',
+                            { className: 'DashboardPage--Section ' + (this.className ? this.className() : '') },
+                            this.content()
+                        );
+                    }
+                }, {
+                    key: 'content',
+                    value: function content() {
+                        return m(
+                            'span',
+                            null,
+                            'Something'
+                        );
+                    }
+                }]);
+                return DashboardSection;
+            })(Component);
+
+            _export('default', DashboardSection);
         }
     };
 });;

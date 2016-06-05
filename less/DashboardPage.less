@@ -1,14 +1,20 @@
 .DashboardPage {
 
-  .container {
+  padding: 20px 0;
+
+  & > .container {
     max-width: 100%;
   }
 
-  .DashboardGraph {
+  .DashboardPage--Section {
     background: white;
-    padding: 10px 5px;
+    padding: 10px 1.25px;
+    width: 100%;
     border-radius: 5px;
     margin-bottom: 10px;
+  }
+
+  .DashboardGraph {
 
     .DashboardGraph--Category {
       color: #9CADBC;
@@ -65,11 +71,9 @@
 
   }
 
-  .DashboardPage--Versions {
-    background: white;
+  .DashboardPage--Section.Versions {
+
     padding: 1px 1.25px;
-    width: 100%;
-    border-radius: 5px;
 
     ul {
       list-style-type: none;
@@ -79,9 +83,6 @@
         margin-right: 20px;
       }
     }
-
-
-
 
     .DashboardPage--ExtensionUpdates {
 
@@ -101,8 +102,12 @@
       }
     }
   }
-}
 
+  .DashboardPage--Section.LatestWidget {
+    padding-top: 5px;
+  }
+
+}
 
 .ExtensionUpdatesModal {
 
@@ -126,7 +131,7 @@
     overflow: hidden;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
-    border-radius:5px;
+    border-radius: 5px;
     //width: calc(100% - 20px);
     color: white;
     height: auto;
@@ -152,15 +157,13 @@
 
 @media (max-width: 1006px) {
 
-  .DashboardPage .container {
-    padding-top: 20px;
-  }
-
   .ExtensionUpdatesModal {
 
     .Modal-header {
       padding-bottom: inherit;
       border-bottom: none;
     }
+
+  }
 
 }

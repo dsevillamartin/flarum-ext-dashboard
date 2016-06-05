@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of datitisev/flarum-ext-admindashboard
+ *
+ * (c) David Sevilla Martín <dsevilla192@icloud.com>
+ *
+ * For the full copyright and license information, please view the MIT license
+ */
 
 namespace Datitisev\Dashboard\Listeners;
 
@@ -7,11 +14,11 @@ use Datitisev\Dashboard\Api\Controllers\GiveDashboardInfo;
 use Flagrow\ImageUpload\Api\Serializers\DashboardSerializer;
 use Flarum\Event\ConfigureApiRoutes;
 use Illuminate\Contracts\Events\Dispatcher;
+
 //use Flarum\Event\PrepareApiAttributes;
 
 class AddDashboardApi
 {
-
     /**
      * Subscribes to the Flarum api routes configuration event.
      *
@@ -44,5 +51,4 @@ class AddDashboardApi
             $event->attributes['isAdmin'] = $event->actor->can('flarum.admin');
         }
     }
-
 }
