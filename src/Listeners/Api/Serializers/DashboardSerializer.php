@@ -1,14 +1,11 @@
 <?php
 
 /*
- * This file is part of flagrow/flarum-ext-image-upload.
+ * This file is part of datitisev/flarum-ext-admindashboard
  *
- * Copyright (c) Flagrow.
+ * (c) David Sevilla Martín <dsevilla192@icloud.com>
  *
- * http://flagrow.github.io
- *
- * For the full copyright and license information, please view the license.md
- * file that was distributed with this source code.
+ * For the full copyright and license information, please view the MIT license
  */
 
 namespace Flagrow\ImageUpload\Api\Serializers;
@@ -26,6 +23,7 @@ class DashboardSerializer extends AbstractSerializer
      * Get the default set of serialized attributes for a model.
      *
      * @param object|array $model
+     *
      * @return array
      */
     protected function getDefaultAttributes($model)
