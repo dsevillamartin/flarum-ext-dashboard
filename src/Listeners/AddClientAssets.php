@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file is part of datitisev/flarum-ext-admindashboard
+ *
+ * (c) David Sevilla Martín <dsevilla192@icloud.com>
+ *
+ * For the full copyright and license information, please view the MIT license
+ */
+
 namespace Datitisev\Dashboard\Listeners;
 
 use DirectoryIterator;
@@ -7,28 +15,30 @@ use Flarum\Event\ConfigureClientView;
 use Flarum\Event\ConfigureLocales;
 use Illuminate\Contracts\Events\Dispatcher;
 
-class AddClientAssets {
-
+class AddClientAssets
+{
     /**
-     * Subscribes to the Flarum events
+     * Subscribes to the Flarum events.
      *
      * @param Dispatcher $events
      */
-    public function subscribe(Dispatcher $events) {
+    public function subscribe(Dispatcher $events)
+    {
         $events->listen(ConfigureClientView::class, [$this, 'addAdminAssets']);
         $events->listen(ConfigureLocales::class, [$this, 'addLocales']);
     }
 
     /**
-     * Modifies the client view for admin
+     * Modifies the client view for admin.
      *
      * @param ConfigureClientView $event
      */
-    public function addAdminAssets(ConfigureClientView $event) {
+    public function addAdminAssets(ConfigureClientView $event)
+    {
         if ($event->isAdmin()) {
             $event->addAssets([
-                __DIR__ . '/../../js/admin/dist/extension.js',
-                __DIR__ . '/../../less/app.less'
+                __DIR__.'/../../js/admin/dist/extension.js',
+                __DIR__.'/../../less/app.less',
             ]);
             $event->addBootstrapper('datitisev/dashboard/main');
         }
@@ -39,12 +49,12 @@ class AddClientAssets {
      *
      * @param ConfigureLocales $event
      */
-    public function addLocales(ConfigureLocales $event) {
+    public function addLocales(ConfigureLocales $event)
+    {
         foreach (new DirectoryIterator(__DIR__.'/../../locale') as $file) {
             if ($file->isFile() && in_array($file->getExtension(), ['yml', 'yaml'])) {
                 $event->locales->addTranslations($file->getBasename('.'.$file->getExtension()), $file->getPathname());
             }
         }
     }
-
 }
