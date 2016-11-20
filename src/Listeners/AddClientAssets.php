@@ -11,8 +11,8 @@
 namespace Datitisev\Dashboard\Listeners;
 
 use DirectoryIterator;
-use Flarum\Event\ConfigureClientView;
 use Flarum\Event\ConfigureLocales;
+use Flarum\Event\ConfigureWebApp;
 use Illuminate\Contracts\Events\Dispatcher;
 
 class AddClientAssets
@@ -24,16 +24,16 @@ class AddClientAssets
      */
     public function subscribe(Dispatcher $events)
     {
-        $events->listen(ConfigureClientView::class, [$this, 'addAdminAssets']);
+        $events->listen(ConfigureWebApp::class, [$this, 'addAdminAssets']);
         $events->listen(ConfigureLocales::class, [$this, 'addLocales']);
     }
 
     /**
      * Modifies the client view for admin.
      *
-     * @param ConfigureClientView $event
+     * @param ConfigureWebApp $event
      */
-    public function addAdminAssets(ConfigureClientView $event)
+    public function addAdminAssets(ConfigureWebApp $event)
     {
         if ($event->isAdmin()) {
             $event->addAssets([

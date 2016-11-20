@@ -72,8 +72,8 @@ export default class ExtensionUpdatesModal extends Modal {
     getPackagesAndVersions() {
         
         
-        const extensions = app.extensions;
-        const extensionNames = Object.getOwnPropertyNames(extensions);
+        const extensions = app.data.extensions;
+        const extensionNames = Object.keys(extensions);
         
         
         extensionNames.forEach((el, i, o) => {

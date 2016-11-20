@@ -3,12 +3,7 @@
   "description": "A dashboard for the admin interface in Flarum",
   "type": "flarum-extension",
   "require": {
-    "flarum/core": "^0.1.0-beta-5"
-  },
-  "extra": {
-    "flarum-extension": {
-      "title": "Admin Dashboard"
-    }
+    "flarum/core": "^0.1.0-beta-6"
   },
   "authors": [
     {
@@ -21,6 +16,16 @@
   "autoload": {
     "psr-4": {
       "Datitisev\\Dashboard\\": "src/"
+    }
+  },
+  "extra": {
+    "flarum-extension": {
+      "title": "Dashboard",
+      "icon": {
+        "name": "tachometer",
+        "backgroundColor": "#3F51B5",
+        "color": "#FFEB3B"
+      }
     }
   }
 }

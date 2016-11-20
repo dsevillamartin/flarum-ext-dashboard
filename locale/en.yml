@@ -26,7 +26,6 @@ datitisev-dashboard:
 
       flarum_version: "Flarum {version}"
       php_version: "PHP {version}"
-      mysql_version: "MySQL {version}"
 
       extensionUpdates:
         checkUpdates_button: Check Extension Updates
@@ -39,6 +38,7 @@ datitisev-dashboard:
 
     ## Settings for the extension
     settings:
+      title: Dashboard Settings
 
       github_heading: Github
       github_description: "The Client ID and Client Secret of a Github app are necessary so you do not exceed the API rate limit.<br\/\><br\/\> Create an app at Github Developers (https://github.com/settings/developers)<br\/\> and introduce the credentials in the extension settings."

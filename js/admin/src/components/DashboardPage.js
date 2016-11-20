@@ -8,16 +8,17 @@ import WidgetVersions from 'datitisev/dashboard/components/WidgetVersions';
 export default class DashboardPage extends Page {
     
     view() {
-        return (<div className="DashboardPage">
-            <div className="container">
-                <h2>{app.translator.trans('core.admin.dashboard.welcome_text')}</h2>
+        return (
+            <div className="DashboardPage">
+                <div className="container">
+                    <h2>{app.translator.trans('core.admin.dashboard.welcome_text')}</h2>
 
-                {Object.keys(this.items().items)
-                    .map(id => {
-                        const section = this.items().get(id);
-                        if (section) return new section;
-                    })
-                }
+                    {Object.keys(this.items().items)
+                        .map(id => {
+                            const section = this.items().get(id);
+                            if (section) return new section;
+                        })
+                    }
                 </div>
             </div>
         );

@@ -1,50 +1,55 @@
-System.register('datitisev/dashboard/changeDashboardPage', ['flarum/extend', 'datitisev/dashboard/components/DashboardPage'], function (_export) {
-    'use strict';
+'use strict';
+
+System.register('datitisev/dashboard/changeDashboardPage', ['flarum/extend', 'datitisev/dashboard/components/DashboardPage'], function (_export, _context) {
+    "use strict";
 
     var extend, NewDashboardPage;
+
+    _export('default', function () {
+
+        app.routes.dashboard = { path: '/', component: NewDashboardPage.component() };
+    });
+
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
         }, function (_datitisevDashboardComponentsDashboardPage) {
-            NewDashboardPage = _datitisevDashboardComponentsDashboardPage['default'];
+            NewDashboardPage = _datitisevDashboardComponentsDashboardPage.default;
         }],
-        execute: function () {
-            _export('default', function () {
-
-                app.routes.dashboard = { path: '/', component: NewDashboardPage.component() };
-            });
-        }
+        execute: function () {}
     };
 });;
-System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend', 'flarum/components/Page', 'flarum/utils/ItemList', 'datitisev/dashboard/components/WidgetGraph', 'datitisev/dashboard/components/WidgetVersions'], function (_export) {
-    'use strict';
+'use strict';
+
+System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend', 'flarum/components/Page', 'flarum/utils/ItemList', 'datitisev/dashboard/components/WidgetGraph', 'datitisev/dashboard/components/WidgetVersions'], function (_export, _context) {
+    "use strict";
 
     var extend, Page, ItemList, WidgetGraph, WidgetVersions, DashboardPage;
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
         }, function (_flarumComponentsPage) {
-            Page = _flarumComponentsPage['default'];
+            Page = _flarumComponentsPage.default;
         }, function (_flarumUtilsItemList) {
-            ItemList = _flarumUtilsItemList['default'];
+            ItemList = _flarumUtilsItemList.default;
         }, function (_datitisevDashboardComponentsWidgetGraph) {
-            WidgetGraph = _datitisevDashboardComponentsWidgetGraph['default'];
+            WidgetGraph = _datitisevDashboardComponentsWidgetGraph.default;
         }, function (_datitisevDashboardComponentsWidgetVersions) {
-            WidgetVersions = _datitisevDashboardComponentsWidgetVersions['default'];
+            WidgetVersions = _datitisevDashboardComponentsWidgetVersions.default;
         }],
         execute: function () {
-            DashboardPage = (function (_Page) {
+            DashboardPage = function (_Page) {
                 babelHelpers.inherits(DashboardPage, _Page);
 
                 function DashboardPage() {
                     babelHelpers.classCallCheck(this, DashboardPage);
-                    babelHelpers.get(Object.getPrototypeOf(DashboardPage.prototype), 'constructor', this).apply(this, arguments);
+                    return babelHelpers.possibleConstructorReturn(this, (DashboardPage.__proto__ || Object.getPrototypeOf(DashboardPage)).apply(this, arguments));
                 }
 
                 babelHelpers.createClass(DashboardPage, [{
                     key: 'view',
                     value: function view() {
-                        var _this = this;
+                        var _this2 = this;
 
                         return m(
                             'div',
@@ -58,7 +63,7 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
                                     app.translator.trans('core.admin.dashboard.welcome_text')
                                 ),
                                 Object.keys(this.items().items).map(function (id) {
-                                    var section = _this.items().get(id);
+                                    var section = _this2.items().get(id);
                                     if (section) return new section();
                                 })
                             )
@@ -76,29 +81,31 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
                     }
                 }]);
                 return DashboardPage;
-            })(Page);
+            }(Page);
 
             _export('default', DashboardPage);
         }
     };
 });;
-System.register('datitisev/dashboard/components/DashboardSettingsModal', ['flarum/components/SettingsModal', 'flarum/app'], function (_export) {
-    'use strict';
+'use strict';
+
+System.register('datitisev/dashboard/components/DashboardSettingsModal', ['flarum/components/SettingsModal', 'flarum/app'], function (_export, _context) {
+    "use strict";
 
     var SettingsModal, app, DashboardSettingsModal;
     return {
         setters: [function (_flarumComponentsSettingsModal) {
-            SettingsModal = _flarumComponentsSettingsModal['default'];
+            SettingsModal = _flarumComponentsSettingsModal.default;
         }, function (_flarumApp) {
-            app = _flarumApp['default'];
+            app = _flarumApp.default;
         }],
         execute: function () {
-            DashboardSettingsModal = (function (_SettingsModal) {
+            DashboardSettingsModal = function (_SettingsModal) {
                 babelHelpers.inherits(DashboardSettingsModal, _SettingsModal);
 
                 function DashboardSettingsModal() {
                     babelHelpers.classCallCheck(this, DashboardSettingsModal);
-                    babelHelpers.get(Object.getPrototypeOf(DashboardSettingsModal.prototype), 'constructor', this).apply(this, arguments);
+                    return babelHelpers.possibleConstructorReturn(this, (DashboardSettingsModal.__proto__ || Object.getPrototypeOf(DashboardSettingsModal)).apply(this, arguments));
                 }
 
                 babelHelpers.createClass(DashboardSettingsModal, [{
@@ -149,29 +156,31 @@ System.register('datitisev/dashboard/components/DashboardSettingsModal', ['flaru
                     }
                 }]);
                 return DashboardSettingsModal;
-            })(SettingsModal);
+            }(SettingsModal);
 
             _export('default', DashboardSettingsModal);
         }
     };
 });;
-System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum/components/Modal', 'flarum/app'], function (_export) {
-    'use strict';
+'use strict';
+
+System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum/components/Modal', 'flarum/app'], function (_export, _context) {
+    "use strict";
 
     var Modal, app, ExtensionUpdatesModal;
     return {
         setters: [function (_flarumComponentsModal) {
-            Modal = _flarumComponentsModal['default'];
+            Modal = _flarumComponentsModal.default;
         }, function (_flarumApp) {
-            app = _flarumApp['default'];
+            app = _flarumApp.default;
         }],
         execute: function () {
-            ExtensionUpdatesModal = (function (_Modal) {
+            ExtensionUpdatesModal = function (_Modal) {
                 babelHelpers.inherits(ExtensionUpdatesModal, _Modal);
 
                 function ExtensionUpdatesModal() {
                     babelHelpers.classCallCheck(this, ExtensionUpdatesModal);
-                    babelHelpers.get(Object.getPrototypeOf(ExtensionUpdatesModal.prototype), 'constructor', this).apply(this, arguments);
+                    return babelHelpers.possibleConstructorReturn(this, (ExtensionUpdatesModal.__proto__ || Object.getPrototypeOf(ExtensionUpdatesModal)).apply(this, arguments));
                 }
 
                 babelHelpers.createClass(ExtensionUpdatesModal, [{
@@ -211,7 +220,7 @@ System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum
                 }, {
                     key: 'content',
                     value: function content() {
-                        var _this = this;
+                        var _this2 = this;
 
                         return m(
                             'div',
@@ -246,7 +255,7 @@ System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum
                                     'tbody',
                                     null,
                                     Object.keys(this.needsUpdate).map(function (id) {
-                                        var extension = _this.needsUpdate[id];
+                                        var extension = _this2.needsUpdate[id];
                                         return m(
                                             'tr',
                                             { className: 'ExtensionList--Item PermissionGrid-child' },
@@ -297,10 +306,10 @@ System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum
                 }, {
                     key: 'getPackagesAndVersions',
                     value: function getPackagesAndVersions() {
-                        var _this2 = this;
+                        var _this3 = this;
 
-                        var extensions = app.extensions;
-                        var extensionNames = Object.getOwnPropertyNames(extensions);
+                        var extensions = app.data.extensions;
+                        var extensionNames = Object.keys(extensions);
 
                         extensionNames.forEach(function (el, i, o) {
 
@@ -315,12 +324,12 @@ System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum
                                 source += '?client_id=' + app.forum.attribute('datitisev-dashboard.github.client_id') + '&client_secret=' + app.forum.attribute('datitisev-dashboard.github.client_secret');
                             } else return false;
 
-                            _this2.request({
+                            _this3.request({
                                 url: source,
                                 method: 'GET'
                             }).then(function (data) {
 
-                                if (_this2.error) _this2.error = null;
+                                if (_this3.error) _this3.error = null;
 
                                 if (data) {
                                     var newVersion = data && data.length ? data[0].tag_name : null;
@@ -328,60 +337,60 @@ System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum
                                     // let version = 'some_other_version';
 
                                     if (newVersion && version != newVersion && version !== 'dev-master' && version != '@dev') {
-                                        _this2.extensionUpdates = _this2.needsUpdate.length + 1;
+                                        _this3.extensionUpdates = _this3.needsUpdate.length + 1;
 
-                                        Promise.resolve(_this2.needsUpdate.push({
+                                        Promise.resolve(_this3.needsUpdate.push({
                                             name: currentExtension.name,
                                             oldVersion: version,
                                             newVersion: newVersion
                                         })).then(function () {
                                             if (o.length - 1 == i) {
-                                                _this2.extensionUpdates = _this2.needsUpdate.length;
-                                                _this2.loading = false;
+                                                _this3.extensionUpdates = _this3.needsUpdate.length;
+                                                _this3.loading = false;
                                                 m.redraw();
                                             } else {
                                                 m.redraw();
                                             }
-                                        })['catch'](function (error) {
-                                            _this2.error = error;
+                                        }).catch(function (error) {
+                                            _this3.error = error;
                                             m.redraw();
                                         });
                                     } else {
-                                        _this2.extensionUpdates = _this2.needsUpdate.length;
+                                        _this3.extensionUpdates = _this3.needsUpdate.length;
                                         if (o.length - 1 == i) {
-                                            _this2.loading = false;
+                                            _this3.loading = false;
                                             m.redraw();
                                         } else {
                                             m.redraw();
                                         }
                                     }
                                 }
-                            })['catch'](function (err) {
+                            }).catch(function (err) {
 
-                                if (!err || typeof err != 'object' || !err.message) return false;
+                                if (!err || (typeof err === 'undefined' ? 'undefined' : babelHelpers.typeof(err)) != 'object' || !err.message) return false;
 
                                 var error = err.message.indexOf('rate limit') >= 0 ? err.message.substr(0, 38) : err.message;
                                 if (error == 'Not Found' && o.length - 1 == i) {
-                                    _this2.loading = false;
+                                    _this3.loading = false;
                                     m.redraw();
                                 } else if (error == 'Not Found') return false;
 
                                 var solution = err.message.indexOf('rate limit') >= 0 ? app.translator.trans('datitisev-dashboard.admin.dashboard.extensionUpdates.addClientIdAndSecret') : '';
 
-                                _this2.error = '<b>GitHub:</b> ' + error;
-                                _this2.solution = solution;
-                                _this2.loading = false;
+                                _this3.error = '<b>GitHub:</b> ' + error;
+                                _this3.solution = solution;
+                                _this3.loading = false;
                                 m.redraw();
                             });
                         });
 
                         setTimeout(function () {
-                            _this2.error = '';
-                            _this2.solution = '';
-                            _this2.extensionUpdates = 0;
-                            _this2.needsUpdate = [];
-                            _this2.loading = false;
-                            _this2.getPackagesAndVersions();
+                            _this3.error = '';
+                            _this3.solution = '';
+                            _this3.extensionUpdates = 0;
+                            _this3.needsUpdate = [];
+                            _this3.loading = false;
+                            _this3.getPackagesAndVersions();
                             m.redraw();
                         }, 60000);
                     }
@@ -393,28 +402,30 @@ System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum
                             m.request({
                                 method: par.method ? par.method : "GET",
                                 url: par.url
-                            }).then(resolve)['catch'](reject);
+                            }).then(resolve).catch(reject);
                         });
                     }
                 }]);
                 return ExtensionUpdatesModal;
-            })(Modal);
+            }(Modal);
 
             _export('default', ExtensionUpdatesModal);
         }
     };
 });;
-System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 'flarum/app', 'datitisev/dashboard/DashboardSection'], function (_export) {
-    'use strict';
+'use strict';
+
+System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 'flarum/app', 'datitisev/dashboard/DashboardSection'], function (_export, _context) {
+    "use strict";
 
     var extend, app, DashboardSection, loadedStuff, discussions, users, posts, warning, DashboardWidgetGraph;
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
         }, function (_flarumApp) {
-            app = _flarumApp['default'];
+            app = _flarumApp.default;
         }, function (_datitisevDashboardDashboardSection) {
-            DashboardSection = _datitisevDashboardDashboardSection['default'];
+            DashboardSection = _datitisevDashboardDashboardSection.default;
         }],
         execute: function () {
             loadedStuff = false;
@@ -423,12 +434,12 @@ System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 
             posts = null;
             warning = null;
 
-            DashboardWidgetGraph = (function (_DashboardSection) {
+            DashboardWidgetGraph = function (_DashboardSection) {
                 babelHelpers.inherits(DashboardWidgetGraph, _DashboardSection);
 
                 function DashboardWidgetGraph() {
                     babelHelpers.classCallCheck(this, DashboardWidgetGraph);
-                    babelHelpers.get(Object.getPrototypeOf(DashboardWidgetGraph.prototype), 'constructor', this).apply(this, arguments);
+                    return babelHelpers.possibleConstructorReturn(this, (DashboardWidgetGraph.__proto__ || Object.getPrototypeOf(DashboardWidgetGraph)).apply(this, arguments));
                 }
 
                 babelHelpers.createClass(DashboardWidgetGraph, [{
@@ -549,35 +560,37 @@ System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 
                     }
                 }]);
                 return DashboardWidgetGraph;
-            })(DashboardSection);
+            }(DashboardSection);
 
             _export('default', DashboardWidgetGraph);
         }
     };
 });;
-System.register('datitisev/dashboard/components/WidgetVersions', ['flarum/extend', 'flarum/app', 'flarum/components/Button', 'datitisev/dashboard/DashboardSection', 'datitisev/dashboard/components/ExtensionUpdatesModal'], function (_export) {
-    'use strict';
+'use strict';
+
+System.register('datitisev/dashboard/components/WidgetVersions', ['flarum/extend', 'flarum/app', 'flarum/components/Button', 'datitisev/dashboard/DashboardSection', 'datitisev/dashboard/components/ExtensionUpdatesModal'], function (_export, _context) {
+    "use strict";
 
     var extend, app, Button, DashboardSection, ExtensionUpdatesModal, DashboardWidgetVersions;
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
         }, function (_flarumApp) {
-            app = _flarumApp['default'];
+            app = _flarumApp.default;
         }, function (_flarumComponentsButton) {
-            Button = _flarumComponentsButton['default'];
+            Button = _flarumComponentsButton.default;
         }, function (_datitisevDashboardDashboardSection) {
-            DashboardSection = _datitisevDashboardDashboardSection['default'];
+            DashboardSection = _datitisevDashboardDashboardSection.default;
         }, function (_datitisevDashboardComponentsExtensionUpdatesModal) {
-            ExtensionUpdatesModal = _datitisevDashboardComponentsExtensionUpdatesModal['default'];
+            ExtensionUpdatesModal = _datitisevDashboardComponentsExtensionUpdatesModal.default;
         }],
         execute: function () {
-            DashboardWidgetVersions = (function (_DashboardSection) {
+            DashboardWidgetVersions = function (_DashboardSection) {
                 babelHelpers.inherits(DashboardWidgetVersions, _DashboardSection);
 
                 function DashboardWidgetVersions() {
                     babelHelpers.classCallCheck(this, DashboardWidgetVersions);
-                    babelHelpers.get(Object.getPrototypeOf(DashboardWidgetVersions.prototype), 'constructor', this).apply(this, arguments);
+                    return babelHelpers.possibleConstructorReturn(this, (DashboardWidgetVersions.__proto__ || Object.getPrototypeOf(DashboardWidgetVersions)).apply(this, arguments));
                 }
 
                 babelHelpers.createClass(DashboardWidgetVersions, [{
@@ -613,7 +626,7 @@ System.register('datitisev/dashboard/components/WidgetVersions', ['flarum/extend
                                 app.translator.trans('datitisev-dashboard.admin.dashboard.php_version', { version: m(
                                         'strong',
                                         null,
-                                        app.settings['phpVersion']
+                                        app.data.settings['phpVersion']
                                     ) })
                             )
                         );
@@ -625,29 +638,31 @@ System.register('datitisev/dashboard/components/WidgetVersions', ['flarum/extend
                     }
                 }]);
                 return DashboardWidgetVersions;
-            })(DashboardSection);
+            }(DashboardSection);
 
             _export('default', DashboardWidgetVersions);
         }
     };
 });;
-System.register('datitisev/dashboard/DashboardSection', ['flarum/extend', 'flarum/Component'], function (_export) {
-    'use strict';
+'use strict';
+
+System.register('datitisev/dashboard/DashboardSection', ['flarum/extend', 'flarum/Component'], function (_export, _context) {
+    "use strict";
 
     var extend, Component, DashboardSection;
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
         }, function (_flarumComponent) {
-            Component = _flarumComponent['default'];
+            Component = _flarumComponent.default;
         }],
         execute: function () {
-            DashboardSection = (function (_Component) {
+            DashboardSection = function (_Component) {
                 babelHelpers.inherits(DashboardSection, _Component);
 
                 function DashboardSection() {
                     babelHelpers.classCallCheck(this, DashboardSection);
-                    babelHelpers.get(Object.getPrototypeOf(DashboardSection.prototype), 'constructor', this).apply(this, arguments);
+                    return babelHelpers.possibleConstructorReturn(this, (DashboardSection.__proto__ || Object.getPrototypeOf(DashboardSection)).apply(this, arguments));
                 }
 
                 babelHelpers.createClass(DashboardSection, [{
@@ -675,25 +690,27 @@ System.register('datitisev/dashboard/DashboardSection', ['flarum/extend', 'flaru
                     }
                 }]);
                 return DashboardSection;
-            })(Component);
+            }(Component);
 
             _export('default', DashboardSection);
         }
     };
 });;
-System.register('datitisev/dashboard/main', ['flarum/extend', 'flarum/app', 'datitisev/dashboard/changeDashboardPage', 'datitisev/dashboard/components/DashboardSettingsModal'], function (_export) {
-    'use strict';
+'use strict';
+
+System.register('datitisev/dashboard/main', ['flarum/extend', 'flarum/app', 'datitisev/dashboard/changeDashboardPage', 'datitisev/dashboard/components/DashboardSettingsModal'], function (_export, _context) {
+    "use strict";
 
     var extend, app, changeDashboardPage, DashboardSettingsModal;
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
         }, function (_flarumApp) {
-            app = _flarumApp['default'];
+            app = _flarumApp.default;
         }, function (_datitisevDashboardChangeDashboardPage) {
-            changeDashboardPage = _datitisevDashboardChangeDashboardPage['default'];
+            changeDashboardPage = _datitisevDashboardChangeDashboardPage.default;
         }, function (_datitisevDashboardComponentsDashboardSettingsModal) {
-            DashboardSettingsModal = _datitisevDashboardComponentsDashboardSettingsModal['default'];
+            DashboardSettingsModal = _datitisevDashboardComponentsDashboardSettingsModal.default;
         }],
         execute: function () {
 
