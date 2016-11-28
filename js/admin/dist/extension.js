@@ -320,7 +320,7 @@ System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum
                             var source = currentExtension.source.url.replace('.git', '').replace('github.com', 'api.github.com/repos');
 
                             if (source.indexOf('github.com') >= 0) {
-                                source = 'https://api.github.com/repos/' + currentExtension.name + '/releases';
+                                source = 'https://api.github.com/repos/' + currentExtension.name + '/tags';
                                 source += '?client_id=' + app.forum.attribute('datitisev-dashboard.github.client_id') + '&client_secret=' + app.forum.attribute('datitisev-dashboard.github.client_secret');
                             } else return false;
 
@@ -332,7 +332,7 @@ System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum
                                 if (_this3.error) _this3.error = null;
 
                                 if (data) {
-                                    var newVersion = data && data.length ? data[0].tag_name : null;
+                                    var newVersion = data && data.length ? data[0].name : null;
                                     var version = currentExtension.version;
                                     // let version = 'some_other_version';
 

@@ -85,7 +85,7 @@ export default class ExtensionUpdatesModal extends Modal {
             let source = currentExtension.source.url.replace('.git', '').replace('github.com', 'api.github.com/repos');
             
             if (source.indexOf('github.com') >= 0) {
-                source = 'https://api.github.com/repos/' + currentExtension.name + '/releases';
+                source = 'https://api.github.com/repos/' + currentExtension.name + '/tags';
                 source += '?client_id=' + app.forum.attribute('datitisev-dashboard.github.client_id') + '&client_secret=' + app.forum.attribute('datitisev-dashboard.github.client_secret');
             } else return false;
             
@@ -97,7 +97,7 @@ export default class ExtensionUpdatesModal extends Modal {
                 if (this.error) this.error = null;
                 
                 if (data) {
-                    let newVersion = (data && data.length) ? data[0].tag_name : null;
+                    let newVersion = (data && data.length) ? data[0].name : null;
                     let version = currentExtension.version;
                     // let version = 'some_other_version';
                     
