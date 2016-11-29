@@ -1,6 +1,7 @@
 .DashboardPage {
 
   padding: 20px 0;
+  background: rgb(240, 240, 240);
 
   & > .container {
     max-width: 100%;
@@ -107,6 +108,39 @@
     padding-top: 5px;
   }
 
+  .DashboardPageExtensions {
+    list-style: none;
+    margin: 50px 0 0 0;
+    padding: 0;
+
+    & > li {
+      float: left;
+      text-align: center;
+      position: relative;
+    }
+
+    .DashboardPageExtensions--Item {
+      width: 120px;
+      height: 180px;
+      margin-right: 15px;
+      //margin-bottom: 5px;
+
+      .DashboardExtensionsItem-icon {
+        width: 120px;
+        height: 120px;
+        background: #e4eff6;
+        color: #668599;
+        border-radius: 4px;
+        display: inline-block;
+        font-size: 60px;
+        line-height: 120px;
+      }
+
+      .DashboardExtensionItem-title {
+        font-weight: bold;
+      }
+    }
+  }
 }
 
 .ExtensionUpdatesModal {

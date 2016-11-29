@@ -21,10 +21,89 @@ System.register('datitisev/dashboard/changeDashboardPage', ['flarum/extend', 'da
 });;
 'use strict';
 
-System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend', 'flarum/components/Page', 'flarum/utils/ItemList', 'datitisev/dashboard/components/WidgetGraph', 'datitisev/dashboard/components/WidgetVersions'], function (_export, _context) {
+System.register('datitisev/dashboard/components/DashboardExtensionInfoModal', ['flarum/components/Modal', 'flarum/helpers/icon'], function (_export, _context) {
     "use strict";
 
-    var extend, Page, ItemList, WidgetGraph, WidgetVersions, DashboardPage;
+    var Modal, icon, DashboardExtensionInfoModal;
+    return {
+        setters: [function (_flarumComponentsModal) {
+            Modal = _flarumComponentsModal.default;
+        }, function (_flarumHelpersIcon) {
+            icon = _flarumHelpersIcon.default;
+        }],
+        execute: function () {
+            DashboardExtensionInfoModal = function (_Modal) {
+                babelHelpers.inherits(DashboardExtensionInfoModal, _Modal);
+
+                function DashboardExtensionInfoModal() {
+                    babelHelpers.classCallCheck(this, DashboardExtensionInfoModal);
+                    return babelHelpers.possibleConstructorReturn(this, (DashboardExtensionInfoModal.__proto__ || Object.getPrototypeOf(DashboardExtensionInfoModal)).apply(this, arguments));
+                }
+
+                babelHelpers.createClass(DashboardExtensionInfoModal, [{
+                    key: 'init',
+                    value: function init() {
+                        this.extension = this.props.extension;
+                        console.log(this.extension);
+                    }
+                }, {
+                    key: 'title',
+                    value: function title() {
+                        return 'hello';
+                    }
+                }, {
+                    key: 'className',
+                    value: function className() {
+                        return 'DashboardExtensionsItem-Info Modal--large';
+                    }
+                }, {
+                    key: 'content',
+                    value: function content() {
+                        var extension = this.extension;
+
+                        return m(
+                            'div',
+                            { className: 'DashboardExtensionInfo' },
+                            m(
+                                'div',
+                                { className: 'DashboardExtensionInfo-Main' },
+                                m(
+                                    'spam',
+                                    { className: 'DashboardExtensionInfoMain-icon', style: extension.icon },
+                                    extension.icon ? icon(extension.icon.name) : ''
+                                ),
+                                m(
+                                    'h3',
+                                    { className: 'DashboardExtensionInfoMain-title' },
+                                    extension.extra['flarum-extension'].title
+                                ),
+                                m(
+                                    'span',
+                                    { className: 'DashboardExtensionInfoMain-name' },
+                                    extension.name
+                                ),
+                                m(
+                                    'span',
+                                    { className: 'DashboardExtensionInfoMain-version' },
+                                    extension.version
+                                )
+                            )
+                        );
+                    }
+                }]);
+                return DashboardExtensionInfoModal;
+            }(Modal);
+
+            _export('default', DashboardExtensionInfoModal);
+        }
+    };
+});;
+'use strict';
+
+System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend', 'flarum/components/Page', 'flarum/utils/ItemList', 'flarum/helpers/icon', 'datitisev/dashboard/components/WidgetGraph', 'datitisev/dashboard/components/WidgetVersions', 'datitisev/dashboard/components/DashboardExtensionInfoModal'], function (_export, _context) {
+    "use strict";
+
+    var extend, Page, ItemList, icon, WidgetGraph, WidgetVersions, DashboardExtensionInfoModal, DashboardPage;
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
@@ -32,10 +111,14 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
             Page = _flarumComponentsPage.default;
         }, function (_flarumUtilsItemList) {
             ItemList = _flarumUtilsItemList.default;
+        }, function (_flarumHelpersIcon) {
+            icon = _flarumHelpersIcon.default;
         }, function (_datitisevDashboardComponentsWidgetGraph) {
             WidgetGraph = _datitisevDashboardComponentsWidgetGraph.default;
         }, function (_datitisevDashboardComponentsWidgetVersions) {
             WidgetVersions = _datitisevDashboardComponentsWidgetVersions.default;
+        }, function (_datitisevDashboardComponentsDashboardExtensionInfoModal) {
+            DashboardExtensionInfoModal = _datitisevDashboardComponentsDashboardExtensionInfoModal.default;
         }],
         execute: function () {
             DashboardPage = function (_Page) {
@@ -47,6 +130,11 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
                 }
 
                 babelHelpers.createClass(DashboardPage, [{
+                    key: 'init',
+                    value: function init() {
+                        this.extensions = app.data.extensions;
+                    }
+                }, {
                     key: 'view',
                     value: function view() {
                         var _this2 = this;
@@ -62,10 +150,44 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
                                     null,
                                     app.translator.trans('core.admin.dashboard.welcome_text')
                                 ),
-                                Object.keys(this.items().items).map(function (id) {
-                                    var section = _this2.items().get(id);
-                                    if (section) return new section();
-                                })
+                                m(
+                                    'div',
+                                    { className: 'DashboardPage--Widgets' },
+                                    Object.keys(this.items().items).map(function (id) {
+                                        var section = _this2.items().get(id);
+                                        if (section) return new section();
+                                    })
+                                ),
+                                m(
+                                    'div',
+                                    { className: 'DashboardPageExtensions' },
+                                    Object.keys(this.extensions).map(function (id) {
+                                        var extension = _this2.extensions[id];
+                                        return m(
+                                            'li',
+                                            { className: 'DashboardPageExtensions--Item',
+                                                onclick: function onclick() {
+                                                    app.modal.show(new DashboardExtensionInfoModal({
+                                                        extension: extension
+                                                    }));
+                                                } },
+                                            m(
+                                                'div',
+                                                { className: 'DashboardExtensionsItem-content' },
+                                                m(
+                                                    'spam',
+                                                    { className: 'DashboardExtensionsItem-icon', style: extension.icon },
+                                                    extension.icon ? icon(extension.icon.name) : ''
+                                                ),
+                                                m(
+                                                    'label',
+                                                    { className: 'DashboardExtensionsItem-title' },
+                                                    extension.extra['flarum-extension'].title
+                                                )
+                                            )
+                                        );
+                                    })
+                                )
                             )
                         );
                     }
