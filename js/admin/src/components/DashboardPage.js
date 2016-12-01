@@ -11,6 +11,8 @@ export default class DashboardPage extends Page {
 
     init() {
         this.extensions = app.data.extensions;
+
+        super.init();
     }
     
     view() {

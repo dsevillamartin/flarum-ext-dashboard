@@ -21,15 +21,19 @@ System.register('datitisev/dashboard/changeDashboardPage', ['flarum/extend', 'da
 });;
 'use strict';
 
-System.register('datitisev/dashboard/components/DashboardExtensionInfoModal', ['flarum/components/Modal', 'flarum/helpers/icon'], function (_export, _context) {
+System.register('datitisev/dashboard/components/DashboardExtensionInfoModal', ['flarum/components/Modal', 'flarum/helpers/icon', 'flarum/utils/saveSettings', 'flarum/components/Switch'], function (_export, _context) {
     "use strict";
 
-    var Modal, icon, DashboardExtensionInfoModal;
+    var Modal, icon, saveSettings, Switch, DashboardExtensionInfoModal;
     return {
         setters: [function (_flarumComponentsModal) {
             Modal = _flarumComponentsModal.default;
         }, function (_flarumHelpersIcon) {
             icon = _flarumHelpersIcon.default;
+        }, function (_flarumUtilsSaveSettings) {
+            saveSettings = _flarumUtilsSaveSettings.default;
+        }, function (_flarumComponentsSwitch) {
+            Switch = _flarumComponentsSwitch.default;
         }],
         execute: function () {
             DashboardExtensionInfoModal = function (_Modal) {
@@ -44,22 +48,17 @@ System.register('datitisev/dashboard/components/DashboardExtensionInfoModal', ['
                     key: 'init',
                     value: function init() {
                         this.extension = this.props.extension;
-                        console.log(this.extension);
-                    }
-                }, {
-                    key: 'title',
-                    value: function title() {
-                        return 'hello';
                     }
                 }, {
                     key: 'className',
                     value: function className() {
-                        return 'DashboardExtensionsItem-Info Modal--large';
+                        return 'DashboardExtensionInfoModal Modal--large';
                     }
                 }, {
                     key: 'content',
                     value: function content() {
                         var extension = this.extension;
+                        var isEnabled = this.isEnabled(extension.id);
 
                         return m(
                             'div',
@@ -86,9 +85,72 @@ System.register('datitisev/dashboard/components/DashboardExtensionInfoModal', ['
                                     'span',
                                     { className: 'DashboardExtensionInfoMain-version' },
                                     extension.version
+                                ),
+                                m(
+                                    'p',
+                                    { className: 'DashboardExtensionInfoMain-description' },
+                                    extension.description || ' '
+                                ),
+                                m(
+                                    'p',
+                                    { className: 'DashboardExtensionInfoMain-useful' },
+                                    m(
+                                        'p',
+                                        { className: 'DashboardExtensionInfoMainUseful-author' },
+                                        extension.authors.length == 1 ? icon('user') : icon('users'),
+                                        ' ',
+                                        extension.authors.map(function (e) {
+                                            return e.name;
+                                        }).join(', ')
+                                    ),
+                                    m(
+                                        'p',
+                                        { className: 'DashboardExtensionInfoMainUseful-source' },
+                                        icon('code'),
+                                        ' ',
+                                        extension.source ? m(
+                                            'a',
+                                            { href: extension.source.url, target: '_blank' },
+                                            'Source'
+                                        ) : 'Unknown'
+                                    )
+                                ),
+                                m(
+                                    'div',
+                                    { className: 'DashboardExtensionInfoMain-enabled' },
+                                    Switch.component({
+                                        state: isEnabled,
+                                        children: isEnabled ? 'Enabled' : 'Disabled',
+                                        onchange: this.toggle.bind(this, extension.id)
+                                    })
                                 )
                             )
                         );
+                    }
+                }, {
+                    key: 'isEnabled',
+                    value: function isEnabled(name) {
+                        var enabled = JSON.parse(app.data.settings.extensions_enabled);
+
+                        return enabled.indexOf(name) !== -1;
+                    }
+                }, {
+                    key: 'toggle',
+                    value: function toggle(id) {
+                        var enabled = this.isEnabled(id);
+
+                        app.request({
+                            url: app.forum.attribute('apiUrl') + '/extensions/' + id,
+                            method: 'PATCH',
+                            data: { enabled: !enabled }
+                        }).then(function () {
+                            var enabledArr = JSON.parse(app.data.settings.extensions_enabled);
+                            if (!enabled) enabledArr.push(id);else enabledArr.splice(enabledArr.indexOf(id), 1);
+
+                            app.data.settings.extensions_enabled = JSON.stringify(enabledArr);
+
+                            m.redraw();
+                        });
                     }
                 }]);
                 return DashboardExtensionInfoModal;
@@ -133,6 +195,8 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
                     key: 'init',
                     value: function init() {
                         this.extensions = app.data.extensions;
+
+                        babelHelpers.get(DashboardPage.prototype.__proto__ || Object.getPrototypeOf(DashboardPage.prototype), 'init', this).call(this);
                     }
                 }, {
                     key: 'view',
