@@ -6,6 +6,8 @@ import icon from 'flarum/helpers/icon';
 import WidgetGraph from 'datitisev/dashboard/components/WidgetGraph';
 import WidgetVersions from 'datitisev/dashboard/components/WidgetVersions';
 import DashboardExtensionInfoModal from 'datitisev/dashboard/components/DashboardExtensionInfoModal';
+import DashboardConfigurationModal from 'datitisev/dashboard/components/DashboardConfigurationModal';
+import AdminNav from "flarum/components/AdminNav";
 
 export default class DashboardPage extends Page {
 
@@ -16,6 +18,9 @@ export default class DashboardPage extends Page {
     }
     
     view() {
+        const pages = AdminNav.prototype.items();
+        pages.remove('dashboard');
+
         return (
             <div className="DashboardPage">
                 <div className="container">
@@ -27,6 +32,22 @@ export default class DashboardPage extends Page {
                                 if (section) return new section;
                             })
                         }
+                    </div>
+                    <div className="DashboardPageConfigurations">
+                        {pages.toArray()
+                            .map(page => {
+                                console.log(page);
+                                return (
+                                    <li className="DashboardPageExtensions--Item"
+                                        onclick={() => {
+                                            app.modal.show(new DashboardConfigurationModal({
+                                                page
+                                            }))
+                                        }}>
+                                        {page.props.children[0]}
+                                    </li>
+                                )
+                            })}
                     </div>
                     <div className="DashboardPageExtensions">
                         {Object.keys(this.extensions)

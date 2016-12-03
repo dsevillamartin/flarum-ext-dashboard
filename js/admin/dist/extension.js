@@ -21,6 +21,60 @@ System.register('datitisev/dashboard/changeDashboardPage', ['flarum/extend', 'da
 });;
 'use strict';
 
+System.register('datitisev/dashboard/components/DashboardConfigurationModal', ['flarum/components/Modal', 'flarum/helpers/icon'], function (_export, _context) {
+  "use strict";
+
+  var Modal, icon, DashboardConfigurationModal;
+  return {
+    setters: [function (_flarumComponentsModal) {
+      Modal = _flarumComponentsModal.default;
+    }, function (_flarumHelpersIcon) {
+      icon = _flarumHelpersIcon.default;
+    }],
+    execute: function () {
+      DashboardConfigurationModal = function (_Modal) {
+        babelHelpers.inherits(DashboardConfigurationModal, _Modal);
+
+        function DashboardConfigurationModal() {
+          babelHelpers.classCallCheck(this, DashboardConfigurationModal);
+          return babelHelpers.possibleConstructorReturn(this, (DashboardConfigurationModal.__proto__ || Object.getPrototypeOf(DashboardConfigurationModal)).apply(this, arguments));
+        }
+
+        babelHelpers.createClass(DashboardConfigurationModal, [{
+          key: 'init',
+          value: function init() {
+            this.page = this.props.page;
+          }
+        }, {
+          key: 'className',
+          value: function className() {
+            return 'Modal--large';
+          }
+        }, {
+          key: 'title',
+          value: function title() {
+            this.page.props.children[0];
+          }
+        }, {
+          key: 'content',
+          value: function content() {
+            var page = app.routes[this.page.props.href.replace('/', '')];
+            return m(
+              'div',
+              null,
+              new page.component.component()
+            );
+          }
+        }]);
+        return DashboardConfigurationModal;
+      }(Modal);
+
+      _export('default', DashboardConfigurationModal);
+    }
+  };
+});;
+'use strict';
+
 System.register('datitisev/dashboard/components/DashboardExtensionInfoModal', ['flarum/components/Modal', 'flarum/helpers/icon', 'flarum/utils/saveSettings', 'flarum/components/Switch'], function (_export, _context) {
     "use strict";
 
@@ -162,10 +216,10 @@ System.register('datitisev/dashboard/components/DashboardExtensionInfoModal', ['
 });;
 'use strict';
 
-System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend', 'flarum/components/Page', 'flarum/utils/ItemList', 'flarum/helpers/icon', 'datitisev/dashboard/components/WidgetGraph', 'datitisev/dashboard/components/WidgetVersions', 'datitisev/dashboard/components/DashboardExtensionInfoModal'], function (_export, _context) {
+System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend', 'flarum/components/Page', 'flarum/utils/ItemList', 'flarum/helpers/icon', 'datitisev/dashboard/components/WidgetGraph', 'datitisev/dashboard/components/WidgetVersions', 'datitisev/dashboard/components/DashboardExtensionInfoModal', 'datitisev/dashboard/components/DashboardConfigurationModal', 'flarum/components/AdminNav'], function (_export, _context) {
     "use strict";
 
-    var extend, Page, ItemList, icon, WidgetGraph, WidgetVersions, DashboardExtensionInfoModal, DashboardPage;
+    var extend, Page, ItemList, icon, WidgetGraph, WidgetVersions, DashboardExtensionInfoModal, DashboardConfigurationModal, AdminNav, DashboardPage;
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
@@ -181,6 +235,10 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
             WidgetVersions = _datitisevDashboardComponentsWidgetVersions.default;
         }, function (_datitisevDashboardComponentsDashboardExtensionInfoModal) {
             DashboardExtensionInfoModal = _datitisevDashboardComponentsDashboardExtensionInfoModal.default;
+        }, function (_datitisevDashboardComponentsDashboardConfigurationModal) {
+            DashboardConfigurationModal = _datitisevDashboardComponentsDashboardConfigurationModal.default;
+        }, function (_flarumComponentsAdminNav) {
+            AdminNav = _flarumComponentsAdminNav.default;
         }],
         execute: function () {
             DashboardPage = function (_Page) {
@@ -203,6 +261,9 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
                     value: function view() {
                         var _this2 = this;
 
+                        var pages = AdminNav.prototype.items();
+                        pages.remove('dashboard');
+
                         return m(
                             'div',
                             { className: 'DashboardPage' },
@@ -220,6 +281,23 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
                                     Object.keys(this.items().items).map(function (id) {
                                         var section = _this2.items().get(id);
                                         if (section) return new section();
+                                    })
+                                ),
+                                m(
+                                    'div',
+                                    { className: 'DashboardPageConfigurations' },
+                                    pages.toArray().map(function (page) {
+                                        console.log(page);
+                                        return m(
+                                            'li',
+                                            { className: 'DashboardPageExtensions--Item',
+                                                onclick: function onclick() {
+                                                    app.modal.show(new DashboardConfigurationModal({
+                                                        page: page
+                                                    }));
+                                                } },
+                                            page.props.children[0]
+                                        );
                                     })
                                 ),
                                 m(
