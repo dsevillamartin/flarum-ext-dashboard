@@ -1,20 +1,30 @@
 'use strict';
 
-System.register('datitisev/dashboard/changeDashboardPage', ['flarum/extend', 'datitisev/dashboard/components/DashboardPage'], function (_export, _context) {
+System.register('datitisev/dashboard/changeDashboardPage', ['flarum/extend', 'datitisev/dashboard/components/DashboardPage', 'flarum/components/Page'], function (_export, _context) {
     "use strict";
 
-    var extend, NewDashboardPage;
+    var extend, override, NewDashboardPage, Page;
 
     _export('default', function () {
 
         app.routes.dashboard = { path: '/', component: NewDashboardPage.component() };
+
+        override(Page.prototype, 'init', function () {
+            app.previous = app.current;
+            app.current = this;
+
+            this.bodyClass = '';
+        });
     });
 
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
+            override = _flarumExtend.override;
         }, function (_datitisevDashboardComponentsDashboardPage) {
             NewDashboardPage = _datitisevDashboardComponentsDashboardPage.default;
+        }, function (_flarumComponentsPage) {
+            Page = _flarumComponentsPage.default;
         }],
         execute: function () {}
     };
@@ -48,12 +58,7 @@ System.register('datitisev/dashboard/components/DashboardConfigurationModal', ['
         }, {
           key: 'className',
           value: function className() {
-            return 'Modal--large';
-          }
-        }, {
-          key: 'title',
-          value: function title() {
-            this.page.props.children[0];
+            return 'DashboardConfigurationModal Modal--large';
           }
         }, {
           key: 'content',
@@ -101,6 +106,8 @@ System.register('datitisev/dashboard/components/DashboardExtensionInfoModal', ['
                 babelHelpers.createClass(DashboardExtensionInfoModal, [{
                     key: 'init',
                     value: function init() {
+                        babelHelpers.get(DashboardExtensionInfoModal.prototype.__proto__ || Object.getPrototypeOf(DashboardExtensionInfoModal.prototype), 'init', this).call(this);
+
                         this.extension = this.props.extension;
                     }
                 }, {
@@ -151,11 +158,11 @@ System.register('datitisev/dashboard/components/DashboardExtensionInfoModal', ['
                                     m(
                                         'p',
                                         { className: 'DashboardExtensionInfoMainUseful-author' },
-                                        extension.authors.length == 1 ? icon('user') : icon('users'),
+                                        extension.authors && extension.authors.length == 1 ? icon('user') : icon('users'),
                                         ' ',
-                                        extension.authors.map(function (e) {
+                                        extension.authors ? extension.authors.map(function (e) {
                                             return e.name;
-                                        }).join(', ')
+                                        }).join(', ') : 'Unknown'
                                     ),
                                     m(
                                         'p',
@@ -263,6 +270,7 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
 
                         var pages = AdminNav.prototype.items();
                         pages.remove('dashboard');
+                        pages.remove('extensions');
 
                         return m(
                             'div',
@@ -286,23 +294,45 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
                                 m(
                                     'div',
                                     { className: 'DashboardPageConfigurations' },
+                                    m(
+                                        'p',
+                                        { className: 'DashboardPageConfigurations--Title' },
+                                        'Configuration'
+                                    ),
                                     pages.toArray().map(function (page) {
-                                        console.log(page);
                                         return m(
                                             'li',
-                                            { className: 'DashboardPageExtensions--Item',
+                                            { className: 'DashboardPageConfigurations--Item',
                                                 onclick: function onclick() {
                                                     app.modal.show(new DashboardConfigurationModal({
                                                         page: page
                                                     }));
                                                 } },
-                                            page.props.children[0]
+                                            m(
+                                                'div',
+                                                { className: 'DashboardConfigurationsItem-content' },
+                                                m(
+                                                    'spam',
+                                                    { className: 'DashboardConfigurationsItem-icon' },
+                                                    page.props.icon ? icon(page.props.icon) : ''
+                                                ),
+                                                m(
+                                                    'label',
+                                                    { className: 'DashboardConfigurationsItem-title' },
+                                                    page.props.children[0]
+                                                )
+                                            )
                                         );
                                     })
                                 ),
                                 m(
                                     'div',
                                     { className: 'DashboardPageExtensions' },
+                                    m(
+                                        'p',
+                                        { className: 'DashboardPageExtensions--Title' },
+                                        'Extensions'
+                                    ),
                                     Object.keys(this.extensions).map(function (id) {
                                         var extension = _this2.extensions[id];
                                         return m(

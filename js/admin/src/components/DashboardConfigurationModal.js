@@ -8,11 +8,7 @@ export default class DashboardConfigurationModal extends Modal {
   }
 
   className() {
-    return 'Modal--large';
-  }
-
-  title() {
-      this.page.props.children[0];
+    return 'DashboardConfigurationModal Modal--large';
   }
 
   content() {

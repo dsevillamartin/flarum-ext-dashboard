@@ -6,6 +6,8 @@ import Switch from 'flarum/components/Switch';
 export default class DashboardExtensionInfoModal extends Modal {
 
     init() {
+        super.init();
+
         this.extension = this.props.extension;
     }
 
@@ -37,7 +39,7 @@ export default class DashboardExtensionInfoModal extends Modal {
                     </p>
                     <p className="DashboardExtensionInfoMain-useful">
                         <p className="DashboardExtensionInfoMainUseful-author">
-                            {extension.authors.length == 1 ? icon('user') : icon('users')} {extension.authors.map(e => e.name).join(', ')}
+                            {extension.authors && extension.authors.length == 1 ? icon('user') : icon('users')} {extension.authors ? extension.authors.map(e => e.name).join(', ') : 'Unknown'}
                         </p>
                         <p className="DashboardExtensionInfoMainUseful-source">
                             {icon('code')} {extension.source ? (
@@ -51,7 +53,6 @@ export default class DashboardExtensionInfoModal extends Modal {
                             children: isEnabled ? 'Enabled' : 'Disabled',
                             onchange: this.toggle.bind(this, extension.id),
                         })}
-                        {/*<input type="checkbox" checked={isEnabled} onclick={this.toggle.bind(this, extension.id)}/> {isEnabled ? 'Enabled' : 'Disabled'}*/}
                     </div>
                 </div>
             </div>

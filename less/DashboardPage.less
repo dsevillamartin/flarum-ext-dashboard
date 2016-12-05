@@ -3,8 +3,13 @@
   padding: 20px 0;
   background: rgb(240, 240, 240);
 
+
   & > .container {
     max-width: 100%;
+  }
+
+  h2 {
+    margin-top: 0;
   }
 
   .DashboardPage--Section {
@@ -108,24 +113,37 @@
     padding-top: 5px;
   }
 
-  .DashboardPageExtensions {
+  .DashboardPageExtensions,
+  .DashboardPageConfigurations {
     list-style: none;
-    margin: 50px 0 0 0;
-    padding: 0;
+    margin: 30px 0 0 0;
+    display: block;
+    background: @body-bg;
+    border-radius: 5px;
+    padding: 15px 20px;
 
     & > li {
-      float: left;
       text-align: center;
       position: relative;
     }
 
-    .DashboardPageExtensions--Item {
+    .DashboardPageExtensions--Title,
+    .DashboardPageConfigurations--Title {
+      text-transform: uppercase;
+      color: @muted-color;
+    }
+
+    .DashboardPageExtensions--Item,
+    .DashboardPageConfigurations--Item {
       width: 120px;
-      height: 180px;
+      height: 150px;
+      margin-top: 15px;
       margin-right: 15px;
       cursor: pointer;
+      display: inline-block;
 
-      .DashboardExtensionsItem-icon {
+      .DashboardExtensionsItem-icon,
+      .DashboardConfigurationsItem-icon {
         width: 120px;
         height: 120px;
         background: #e4eff6;
@@ -134,10 +152,12 @@
         display: inline-block;
         font-size: 60px;
         line-height: 120px;
+        margin-bottom: 5px;
       }
 
-      .DashboardExtensionItem-title {
-        font-weight: bold;
+      .DashboardExtensionsItem-title,
+      .DashboardConfigurationsItem-title {
+        font-weight: 600;
       }
     }
   }
@@ -190,7 +210,6 @@
 }
 
 .DashboardExtensionInfoModal {
-  height: 100%;
 
   .Modal-header {
     display: none;
@@ -250,7 +269,7 @@
         margin-right: 10px;
 
         a {
-          color: inherit;
+          color: @link-color;
         }
       }
     }
@@ -268,15 +287,23 @@
 
 }
 
-@media (max-width: 1006px) {
+.DashboardConfigurationModal {
 
-  .ExtensionUpdatesModal {
-
-    .Modal-header {
-      padding-bottom: inherit;
-      border-bottom: none;
-    }
-
+  .Modal-header {
+    display: none;
   }
 
 }
+
+@media (max-width: 1006px) {
+
+    .ExtensionUpdatesModal {
+
+      .Modal-header {
+        padding-bottom: inherit;
+        border-bottom: none;
+      }
+
+    }
+
+  }

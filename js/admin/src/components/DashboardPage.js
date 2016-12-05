@@ -20,6 +20,7 @@ export default class DashboardPage extends Page {
     view() {
         const pages = AdminNav.prototype.items();
         pages.remove('dashboard');
+        pages.remove('extensions');
 
         return (
             <div className="DashboardPage">
@@ -34,22 +35,34 @@ export default class DashboardPage extends Page {
                         }
                     </div>
                     <div className="DashboardPageConfigurations">
+                        <p className="DashboardPageConfigurations--Title">
+                            Configuration
+                        </p>
                         {pages.toArray()
                             .map(page => {
-                                console.log(page);
                                 return (
-                                    <li className="DashboardPageExtensions--Item"
+                                    <li className="DashboardPageConfigurations--Item"
                                         onclick={() => {
                                             app.modal.show(new DashboardConfigurationModal({
                                                 page
                                             }))
                                         }}>
-                                        {page.props.children[0]}
+                                        <div className="DashboardConfigurationsItem-content">
+                                            <spam className="DashboardConfigurationsItem-icon">
+                                                {page.props.icon ? icon(page.props.icon) : ''}
+                                            </spam>
+                                            <label className="DashboardConfigurationsItem-title">
+                                                {page.props.children[0]}
+                                            </label>
+                                        </div>
                                     </li>
                                 )
                             })}
                     </div>
                     <div className="DashboardPageExtensions">
+                        <p className="DashboardPageExtensions--Title">
+                            Extensions
+                        </p>
                         {Object.keys(this.extensions)
                             .map(id => {
                                 let extension = this.extensions[id];
