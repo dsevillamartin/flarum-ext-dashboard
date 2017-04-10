@@ -46,5 +46,5 @@ datitisev-dashboard:
                 clientId_label: Client ID
                 clientSecret_label: Client Secret
 
-                graph_heading: Dashboard
+                graph_heading: Painel de controle
                 interval_label: Qual o intervalo de tempo você prefere solicitar a atualização de informações. Padrão 10 min
