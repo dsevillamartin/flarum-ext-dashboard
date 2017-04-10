@@ -1,0 +1,50 @@
+datitisev-dashboard:
+
+    admin:
+
+        ## Translations for new dashboard page
+
+        dashboard:
+
+            months:
+              january: Janeiro
+              february: Fevereiro
+              march: Março
+              april: Abril
+              may: Maio
+              june: Junho
+              july: Julho
+              august: Agosto
+              september: Setembro
+              october: Outubro
+              november: Novembro
+              december: Dezembro
+
+          graph:
+              users: Usuários
+              discussions: Discussões
+              posts: Posts
+
+          flarum_version: "Flarum {version}"
+          php_version: "PHP {version}"
+
+          extensionUpdates:
+              checkUpdates_button: Atualizar Extensões
+              checking: "Verificando atualizações"
+              updatesAvaliable: "{number} atualizações disponíveis"
+              noUpdates: "No momento não há atualizações"
+              error: "Ocorreu um erro ao checar atualizações"
+              addClientIdAndSecret: => datitisev-dashboard.admin.settings.github_description
+
+          ## Settings for the extension
+
+            settings:
+                title: Configurações do Dashboard
+
+                github_heading: Github
+                github_description: O Client ID e o Client Secret do Github são necessários para não exceder o limite da API.
+                clientId_label: Client ID
+                clientSecret_label: Client Secret
+
+                graph_heading: Painel de controle
+                interval_label: Qual o intervalo de tempo você prefere solicitar a atualização de informações. Padrão 10 min
