@@ -795,6 +795,8 @@ System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 
                 }, {
                     key: 'getGraphData',
                     value: function getGraphData() {
+                        var _this2 = this;
+
                         loadedStuff = true;
                         app.store.find('discussions', {
                             sort: '-startTime',
@@ -805,24 +807,33 @@ System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 
                             discussions = discussion && discussion[0] ? discussion[0].id() : '???';
                             m.redraw();
 
-                            app.store.find('users', {
+                            return app.store.find('users', {
                                 sort: '-joinTime',
                                 page: {
                                     limit: 1
                                 }
-                            }).then(function (user) {
-
-                                users = user.length && user[0] ? user[0].id() : '???';
-                                posts = '???';
-
-                                m.redraw();
                             });
+                        }).then(function (user) {
+                            users = user.length && user[0] ? user[0].id() : '???';
+
+                            m.redraw();
+
+                            return app.store.find('posts', {
+                                sort: '-time',
+                                page: {
+                                    limit: 1
+                                }
+                            });
+                        }).then(function (post) {
+                            posts = post.length && post[0] ? post[0].id() : '???';
+
+                            m.redraw();
 
                             setTimeout(function () {
                                 loadedStuff = false;
                                 discussions, users, posts = null;
 
-                                m.redraw();
+                                _this2.getGraphData();
                             }, Math.round(parseInt(app.forum.attribute('datitisev-dashboard.graph.dataInterval') || '10')) * (60 * 1000));
                         });
                     }

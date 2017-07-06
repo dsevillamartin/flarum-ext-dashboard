@@ -64,27 +64,33 @@ export default class DashboardWidgetGraph extends DashboardSection {
             discussions = (discussion && discussion[0]) ? discussion[0].id() : '???';
             m.redraw();
 
-            app.store.find('users', {
+            return app.store.find('users', {
                 sort: '-joinTime',
                 page: {
                     limit: 1
                 }
-            }).then(user => {
-
-                users = (user.length && user[0]) ? user[0].id() : '???';
-                posts = '???';
-
-
-                m.redraw();
-
             });
-            
+        }).then(user => {
+            users = (user.length && user[0]) ? user[0].id() : '???';
+
+            m.redraw();
+
+            return app.store.find('posts', {
+                sort: '-time',
+                page: {
+                    limit: 1
+                }
+            });
+        }).then(post => {
+            posts = (post.length && post[0]) ? post[0].id() : '???';
+
+            m.redraw();
+
             setTimeout(() => {
                 loadedStuff = false;
                 discussions, users, posts = null;
 
-                m.redraw();
-
+                this.getGraphData();
             }, Math.round(parseInt(app.forum.attribute('datitisev-dashboard.graph.dataInterval') || '10')) * (60 * 1000));
         });
 
