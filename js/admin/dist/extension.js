@@ -268,9 +268,9 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
                     value: function view() {
                         var _this2 = this;
 
-                        var pages = AdminNav.prototype.items();
-                        pages.remove('dashboard');
-                        pages.remove('extensions');
+                        // const pages = AdminNav.prototype.items();
+                        // pages.remove('dashboard');
+                        // pages.remove('extensions');
 
                         return m(
                             'div',
@@ -289,40 +289,6 @@ System.register('datitisev/dashboard/components/DashboardPage', ['flarum/extend'
                                     Object.keys(this.items().items).map(function (id) {
                                         var section = _this2.items().get(id);
                                         if (section) return new section();
-                                    })
-                                ),
-                                m(
-                                    'div',
-                                    { className: 'DashboardPageConfigurations' },
-                                    m(
-                                        'p',
-                                        { className: 'DashboardPageConfigurations--Title' },
-                                        'Configuration'
-                                    ),
-                                    pages.toArray().map(function (page) {
-                                        return m(
-                                            'li',
-                                            { className: 'DashboardPageConfigurations--Item',
-                                                onclick: function onclick() {
-                                                    app.modal.show(new DashboardConfigurationModal({
-                                                        page: page
-                                                    }));
-                                                } },
-                                            m(
-                                                'div',
-                                                { className: 'DashboardConfigurationsItem-content' },
-                                                m(
-                                                    'spam',
-                                                    { className: 'DashboardConfigurationsItem-icon' },
-                                                    page.props.icon ? icon(page.props.icon) : ''
-                                                ),
-                                                m(
-                                                    'label',
-                                                    { className: 'DashboardConfigurationsItem-title' },
-                                                    page.props.children[0]
-                                                )
-                                            )
-                                        );
                                     })
                                 ),
                                 m(
@@ -712,7 +678,7 @@ System.register('datitisev/dashboard/components/ExtensionUpdatesModal', ['flarum
 System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 'flarum/app', 'datitisev/dashboard/DashboardSection'], function (_export, _context) {
     "use strict";
 
-    var extend, app, DashboardSection, loadedStuff, discussions, users, posts, warning, DashboardWidgetGraph;
+    var extend, app, DashboardSection, DashboardWidgetGraph;
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
@@ -722,12 +688,6 @@ System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 
             DashboardSection = _datitisevDashboardDashboardSection.default;
         }],
         execute: function () {
-            loadedStuff = false;
-            discussions = null;
-            users = null;
-            posts = null;
-            warning = null;
-
             DashboardWidgetGraph = function (_DashboardSection) {
                 babelHelpers.inherits(DashboardWidgetGraph, _DashboardSection);
 
@@ -737,11 +697,6 @@ System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 
                 }
 
                 babelHelpers.createClass(DashboardWidgetGraph, [{
-                    key: 'config',
-                    value: function config() {
-                        if (!loadedStuff) this.getGraphData();
-                    }
-                }, {
                     key: 'content',
                     value: function content() {
                         var months = [app.translator.trans('datitisev-dashboard.admin.dashboard.months.january'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.february'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.march'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.april'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.may'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.june'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.july'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.august'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.september'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.october'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.november'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.december')];
@@ -758,7 +713,7 @@ System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 
                                 m(
                                     'span',
                                     { className: 'number' },
-                                    users ? users : '...'
+                                    app.data.settings['dashboard.userCount']
                                 )
                             ),
                             m(
@@ -770,7 +725,7 @@ System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 
                                 m(
                                     'span',
                                     { className: 'number' },
-                                    discussions ? discussions : '...'
+                                    app.data.settings['dashboard.discussionCount']
                                 )
                             ),
                             m(
@@ -782,7 +737,7 @@ System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 
                                 m(
                                     'span',
                                     { className: 'number' },
-                                    posts ? posts : '...'
+                                    app.data.settings['dashboard.postCount']
                                 )
                             )
                         );
@@ -791,51 +746,6 @@ System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 
                     key: 'className',
                     value: function className() {
                         return "DashboardGraph";
-                    }
-                }, {
-                    key: 'getGraphData',
-                    value: function getGraphData() {
-                        var _this2 = this;
-
-                        loadedStuff = true;
-                        app.store.find('discussions', {
-                            sort: '-startTime',
-                            page: {
-                                limit: 1
-                            }
-                        }).then(function (discussion) {
-                            discussions = discussion && discussion[0] ? discussion[0].id() : '???';
-                            m.redraw();
-
-                            return app.store.find('users', {
-                                sort: '-joinTime',
-                                page: {
-                                    limit: 1
-                                }
-                            });
-                        }).then(function (user) {
-                            users = user.length && user[0] ? user[0].id() : '???';
-
-                            m.redraw();
-
-                            return app.store.find('posts', {
-                                sort: '-time',
-                                page: {
-                                    limit: 1
-                                }
-                            });
-                        }).then(function (post) {
-                            posts = post.length && post[0] ? post[0].id() : '???';
-
-                            m.redraw();
-
-                            setTimeout(function () {
-                                loadedStuff = false;
-                                discussions, users, posts = null;
-
-                                _this2.getGraphData();
-                            }, Math.round(parseInt(app.forum.attribute('datitisev-dashboard.graph.dataInterval') || '10')) * (60 * 1000));
-                        });
                     }
                 }, {
                     key: 'graphView',
@@ -931,7 +841,7 @@ System.register('datitisev/dashboard/components/WidgetVersions', ['flarum/extend
                                 app.translator.trans('datitisev-dashboard.admin.dashboard.php_version', { version: m(
                                         'strong',
                                         null,
-                                        app.data.settings['phpVersion']
+                                        app.data.settings['dashboard.phpVersion']
                                     ) })
                             )
                         );

@@ -2,17 +2,7 @@ import { extend } from 'flarum/extend';
 import app from 'flarum/app';
 import DashboardSection from 'datitisev/dashboard/DashboardSection';
 
-var loadedStuff = false;
-var discussions = null;
-var users = null;
-var posts = null;
-var warning = null;
-
 export default class DashboardWidgetGraph extends DashboardSection {
-
-    config() {
-        if (!loadedStuff) this.getGraphData();
-    }
 
     content() {
         const months = [
@@ -34,66 +24,23 @@ export default class DashboardWidgetGraph extends DashboardSection {
                 <div className="DashboardGraph--Category Category--Users">
                     <span className="color"></span>
                     {app.translator.trans('datitisev-dashboard.admin.dashboard.graph.users')}<br />
-                    <span className="number">{users ? users : '...'}</span>
+                    <span className="number">{app.data.settings['dashboard.userCount']}</span>
                 </div>
                 <div className="DashboardGraph--Category Category--Discussions">
                     <span className="color"></span>
                     {app.translator.trans('datitisev-dashboard.admin.dashboard.graph.discussions')}<br />
-                    <span className="number">{discussions ? discussions : '...'}</span>
+                    <span className="number">{app.data.settings['dashboard.discussionCount']}</span>
                 </div>
                 <div className="DashboardGraph--Category Category--Posts">
                     <span className="color"></span>
                     {app.translator.trans('datitisev-dashboard.admin.dashboard.graph.posts')}<br />
-                    <span className="number">{posts ? posts : '...'}</span>
+                    <span className="number">{app.data.settings['dashboard.postCount']}</span>
                 </div>
             </div>)
     }
 
     className() {
         return "DashboardGraph";
-    }
-
-    getGraphData() {
-        loadedStuff = true;
-        app.store.find('discussions', {
-            sort: '-startTime',
-            page: {
-                limit: 1
-            }
-        }).then(discussion => {
-            discussions = (discussion && discussion[0]) ? discussion[0].id() : '???';
-            m.redraw();
-
-            return app.store.find('users', {
-                sort: '-joinTime',
-                page: {
-                    limit: 1
-                }
-            });
-        }).then(user => {
-            users = (user.length && user[0]) ? user[0].id() : '???';
-
-            m.redraw();
-
-            return app.store.find('posts', {
-                sort: '-time',
-                page: {
-                    limit: 1
-                }
-            });
-        }).then(post => {
-            posts = (post.length && post[0]) ? post[0].id() : '???';
-
-            m.redraw();
-
-            setTimeout(() => {
-                loadedStuff = false;
-                discussions, users, posts = null;
-
-                this.getGraphData();
-            }, Math.round(parseInt(app.forum.attribute('datitisev-dashboard.graph.dataInterval') || '10')) * (60 * 1000));
-        });
-
     }
 
     graphView() {

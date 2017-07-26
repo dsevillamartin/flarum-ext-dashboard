@@ -16,11 +16,11 @@ export default class DashboardPage extends Page {
 
         super.init();
     }
-    
+
     view() {
-        const pages = AdminNav.prototype.items();
-        pages.remove('dashboard');
-        pages.remove('extensions');
+        // const pages = AdminNav.prototype.items();
+        // pages.remove('dashboard');
+        // pages.remove('extensions');
 
         return (
             <div className="DashboardPage">
@@ -34,31 +34,7 @@ export default class DashboardPage extends Page {
                             })
                         }
                     </div>
-                    <div className="DashboardPageConfigurations">
-                        <p className="DashboardPageConfigurations--Title">
-                            Configuration
-                        </p>
-                        {pages.toArray()
-                            .map(page => {
-                                return (
-                                    <li className="DashboardPageConfigurations--Item"
-                                        onclick={() => {
-                                            app.modal.show(new DashboardConfigurationModal({
-                                                page
-                                            }))
-                                        }}>
-                                        <div className="DashboardConfigurationsItem-content">
-                                            <spam className="DashboardConfigurationsItem-icon">
-                                                {page.props.icon ? icon(page.props.icon) : ''}
-                                            </spam>
-                                            <label className="DashboardConfigurationsItem-title">
-                                                {page.props.children[0]}
-                                            </label>
-                                        </div>
-                                    </li>
-                                )
-                            })}
-                    </div>
+
                     <div className="DashboardPageExtensions">
                         <p className="DashboardPageExtensions--Title">
                             Extensions
@@ -92,11 +68,11 @@ export default class DashboardPage extends Page {
 
     items() {
         const items = new ItemList();
-        
+
         items.add('countData', WidgetGraph);
         items.add('versions', WidgetVersions);
 
         return items;
     }
-    
+
 }

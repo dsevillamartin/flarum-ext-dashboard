@@ -10,6 +10,9 @@
 
 namespace Datitisev\Dashboard\Listeners;
 
+use Flarum\Core\Discussion;
+use Flarum\Core\Post;
+use Flarum\Core\User;
 use Flarum\Event\PrepareUnserializedSettings;
 use Illuminate\Contracts\Events\Dispatcher;
 
@@ -32,6 +35,9 @@ class PassDataToAdmin
      */
     public function prepareUnserializedSettings(PrepareUnserializedSettings $event)
     {
-        $event->settings['phpVersion'] = phpversion();
+        $event->settings['dashboard.phpVersion'] = phpversion();
+        $event->settings['dashboard.postCount'] = count(Post::where('type', 'comment')->lists('discussion_id', 'id'));
+        $event->settings['dashboard.discussionCount'] = count(Discussion::where('is_approved', 1)->lists('id', 'start_post_id'));
+        $event->settings['dashboard.userCount'] = count(User::where('is_activated', 1)->lists('id'));
     }
 }
