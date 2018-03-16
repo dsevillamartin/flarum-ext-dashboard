@@ -19,22 +19,23 @@ export default class DashboardWidgetGraph extends DashboardSection {
             app.translator.trans('datitisev-dashboard.admin.dashboard.months.november'),
             app.translator.trans('datitisev-dashboard.admin.dashboard.months.december')
         ];
+        const { userCount, discussionCount, postCount } = app.data.settings['datitisev-dashboard.data'];
 
         return (<div className="DashboardGraph--Categories">
                 <div className="DashboardGraph--Category Category--Users">
                     <span className="color"></span>
                     {app.translator.trans('datitisev-dashboard.admin.dashboard.graph.users')}<br />
-                    <span className="number">{app.data.settings['dashboard.userCount']}</span>
+                    <span className="number">{userCount}</span>
                 </div>
                 <div className="DashboardGraph--Category Category--Discussions">
                     <span className="color"></span>
                     {app.translator.trans('datitisev-dashboard.admin.dashboard.graph.discussions')}<br />
-                    <span className="number">{app.data.settings['dashboard.discussionCount']}</span>
+                    <span className="number">{discussionCount}</span>
                 </div>
                 <div className="DashboardGraph--Category Category--Posts">
                     <span className="color"></span>
                     {app.translator.trans('datitisev-dashboard.admin.dashboard.graph.posts')}<br />
-                    <span className="number">{app.data.settings['dashboard.postCount']}</span>
+                    <span className="number">{postCount}</span>
                 </div>
             </div>)
     }

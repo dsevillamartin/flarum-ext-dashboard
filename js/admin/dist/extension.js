@@ -700,6 +700,11 @@ System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 
                     key: 'content',
                     value: function content() {
                         var months = [app.translator.trans('datitisev-dashboard.admin.dashboard.months.january'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.february'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.march'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.april'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.may'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.june'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.july'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.august'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.september'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.october'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.november'), app.translator.trans('datitisev-dashboard.admin.dashboard.months.december')];
+                        var _app$data$settings$da = app.data.settings['datitisev-dashboard.data'],
+                            userCount = _app$data$settings$da.userCount,
+                            discussionCount = _app$data$settings$da.discussionCount,
+                            postCount = _app$data$settings$da.postCount;
+
 
                         return m(
                             'div',
@@ -713,7 +718,7 @@ System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 
                                 m(
                                     'span',
                                     { className: 'number' },
-                                    app.data.settings['dashboard.userCount']
+                                    userCount
                                 )
                             ),
                             m(
@@ -725,7 +730,7 @@ System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 
                                 m(
                                     'span',
                                     { className: 'number' },
-                                    app.data.settings['dashboard.discussionCount']
+                                    discussionCount
                                 )
                             ),
                             m(
@@ -737,7 +742,7 @@ System.register('datitisev/dashboard/components/WidgetGraph', ['flarum/extend', 
                                 m(
                                     'span',
                                     { className: 'number' },
-                                    app.data.settings['dashboard.postCount']
+                                    postCount
                                 )
                             )
                         );
@@ -841,7 +846,7 @@ System.register('datitisev/dashboard/components/WidgetVersions', ['flarum/extend
                                 app.translator.trans('datitisev-dashboard.admin.dashboard.php_version', { version: m(
                                         'strong',
                                         null,
-                                        app.data.settings['dashboard.phpVersion']
+                                        app.data.settings['datitisev-dashboard.data'].php
                                     ) })
                             )
                         );

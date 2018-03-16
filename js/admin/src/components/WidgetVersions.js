@@ -20,7 +20,7 @@ export default class DashboardWidgetVersions extends DashboardSection {
                 })}
                 </li>
                 <li>{app.translator.trans('datitisev-dashboard.admin.dashboard.flarum_version', {version: <strong>{app.forum.attribute('version')}</strong>})}</li>
-                <li>{app.translator.trans('datitisev-dashboard.admin.dashboard.php_version', {version: <strong>{app.data.settings['dashboard.phpVersion']}</strong>})}</li>
+                <li>{app.translator.trans('datitisev-dashboard.admin.dashboard.php_version', {version: <strong>{app.data.settings['datitisev-dashboard.data'].php}</strong>})}</li>
             </ul>
         )
     }

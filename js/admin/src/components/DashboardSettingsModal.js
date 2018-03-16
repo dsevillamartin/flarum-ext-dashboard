@@ -15,12 +15,12 @@ export default class DashboardSettingsModal extends SettingsModal {
             <div className="Form-group">
                 <h2>{app.translator.trans('datitisev-dashboard.admin.settings.github_heading')}</h2>
                 <label htmlFor="client_id">{app.translator.trans('datitisev-dashboard.admin.settings.clientId_label')}</label>
-                <input type="text" className="FormControl" bidi={this.setting('datitisev-dashboard.github.client_id')}></input>
+                <input type="text" className="FormControl" bidi={this.setting('datitisev-dashboard.github.client_id')}/>
                 <label htmlFor="client_id">{app.translator.trans('datitisev-dashboard.admin.settings.clientSecret_label')}</label>
-                <input type="text" className="FormControl" bidi={this.setting('datitisev-dashboard.github.client_secret')}></input>
+                <input type="text" className="FormControl" bidi={this.setting('datitisev-dashboard.github.client_secret')}/>
                 <h2>{app.translator.trans('datitisev-dashboard.admin.settings.graph_heading')}</h2>
                 <label htmlFor="client_id">{app.translator.trans('datitisev-dashboard.admin.settings.interval_label')}</label>
-                <input type="number" className="FormControl" bidi={this.setting('datitisev-dashboard.graph.dataInterval')}></input>
+                <input type="number" className="FormControl" bidi={this.setting('datitisev-dashboard.graph.dataInterval')}/>
             </div>
         ];
     }
