@@ -36,10 +36,10 @@ class PassDataToAdmin
     public function prepareUnserializedSettings(PrepareUnserializedSettings $event)
     {
         $event->settings['datitisev-dashboard.data'] = [
-            'php' => phpversion(),
-            'postCount' => count(Post::where('type', 'comment')->lists('discussion_id', 'id')),
+            'php'             => phpversion(),
+            'postCount'       => count(Post::where('type', 'comment')->lists('discussion_id', 'id')),
             'discussionCount' => count(Discussion::where('is_approved', 1)->lists('id', 'start_post_id')),
-            'userCount' => count(User::where('is_activated', 1)->lists('id')),
+            'userCount'       => count(User::where('is_activated', 1)->lists('id')),
         ];
     }
 }
