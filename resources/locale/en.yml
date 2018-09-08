@@ -1,10 +1,7 @@
 datitisev-dashboard:
-
   admin:
-
     ## Translations for new dashboard page
     dashboard:
-
       months:
         january: January
         february: February
@@ -24,9 +21,6 @@ datitisev-dashboard:
         discussions: Discussions
         posts: Posts
 
-      flarum_version: "Flarum {version}"
-      php_version: "PHP {version}"
-
       extensionUpdates:
         checkUpdates_button: Check Extension Updates
         checking: "Checking Updates..."
@@ -41,9 +35,9 @@ datitisev-dashboard:
       title: Dashboard Settings
 
       github_heading: Github
-      github_description: "The Client ID and Client Secret of a Github app are necessary so you do not exceed the API rate limit.<br\/\><br\/\> Create an app at Github Developers (https://github.com/settings/developers)<br\/\> and introduce the credentials in the extension settings."
+      github_description: The Client ID and Client Secret of a Github app are necessary so you do not exceed the API rate limit.<br/\><br\/\> Create an app at Github Developers (https://github.com/settings/developers)<br\/\> and introduce the credentials in the extension settings.
       clientId_label: Client Id
       clientSecret_label: Client Secret
 
       graph_heading: Dashboard
-      interval_label: How often to get new data (discussions, users...) in minutes (whole number). Defaults to 10min
+      interval_label: "How often to get new data (discussions, users...) in minutes (whole number). Defaults to 10min"

@@ -1,16 +1,17 @@
 import { extend } from 'flarum/extend';
 import Page from 'flarum/components/Page';
+import Button from 'flarum/components/Button';
+import FlarumDashboardPage from 'flarum/components/DashboardPage';
 import ItemList from 'flarum/utils/ItemList';
 import icon from 'flarum/helpers/icon';
 
-import WidgetGraph from 'datitisev/dashboard/components/WidgetGraph';
-import WidgetVersions from 'datitisev/dashboard/components/WidgetVersions';
-import DashboardExtensionInfoModal from 'datitisev/dashboard/components/DashboardExtensionInfoModal';
-import DashboardConfigurationModal from 'datitisev/dashboard/components/DashboardConfigurationModal';
+import WidgetGraph from './WidgetGraph';
+import DashboardExtensionInfoModal from './DashboardExtensionInfoModal';
+import DashboardConfigurationModal from './DashboardConfigurationModal';
 import AdminNav from "flarum/components/AdminNav";
+import ExtensionUpdatesModal from "./ExtensionUpdatesModal";
 
 export default class DashboardPage extends Page {
-
     init() {
         this.extensions = app.data.extensions;
 
@@ -25,20 +26,29 @@ export default class DashboardPage extends Page {
         return (
             <div className="DashboardPage">
                 <div className="container">
-                    <h2>{app.translator.trans('core.admin.dashboard.welcome_text')}</h2>
                     <div className="DashboardPage--Widgets">
                         {Object.keys(this.items().items)
                             .map(id => {
                                 const section = this.items().get(id);
-                                if (section) return new section;
+                                if (section) return section;
                             })
                         }
                     </div>
 
                     <div className="DashboardPageExtensions">
                         <p className="DashboardPageExtensions--Title">
-                            Extensions
+                            <span>
+                                {app.translator.trans('core.admin.nav.extensions_button')}
+                            </span>
+
+                            {Button.component({
+                                children: icon('fas fa-sync'),
+                                className: 'Button',
+                                onclick: () => app.modal.show(new ExtensionUpdatesModal())
+                            })}
                         </p>
+
+
                         {Object.keys(this.extensions)
                             .map(id => {
                                 let extension = this.extensions[id];
@@ -69,8 +79,13 @@ export default class DashboardPage extends Page {
     items() {
         const items = new ItemList();
 
-        items.add('countData', WidgetGraph);
-        items.add('versions', WidgetVersions);
+        for (const item of FlarumDashboardPage.prototype.availableWidgets()) {
+            if (item.component.name === 'StatisticsWidget') continue;
+
+            items.add(item.component.name, item);
+        }
+
+        items.add('countData', <WidgetGraph/>);
 
         return items;
     }

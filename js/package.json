@@ -1,0 +1,17 @@
+{
+  "name": "@datitisev/dashboard",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "webpack --mode production",
+    "watch": "webpack --mode development --watch",
+    "lint": "prettier --single-quote --trailing-comma es5 --print-width 150 --tab-width 4 --write src/**/* src/**/**/*"
+  },
+  "dependencies": {
+    "flarum-webpack-config": "^0.1.0-beta.9",
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.0.7"
+  },
+  "devDependencies": {
+    "prettier": "^1.14.2"
+  }
+}

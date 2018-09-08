@@ -22,7 +22,7 @@
     "flarum-extension": {
       "title": "Dashboard",
       "icon": {
-        "name": "tachometer",
+        "name": "fas fa-tachometer-alt",
         "backgroundColor": "#3F51B5",
         "color": "#FFEB3B"
       }

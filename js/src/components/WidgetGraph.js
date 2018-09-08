@@ -1,8 +1,7 @@
-import { extend } from 'flarum/extend';
 import app from 'flarum/app';
-import DashboardSection from 'datitisev/dashboard/DashboardSection';
+import DashboardWidget from 'flarum/components/DashboardWidget';
 
-export default class DashboardWidgetGraph extends DashboardSection {
+export default class DashboardWidgetGraph extends DashboardWidget {
 
     content() {
         const months = [
@@ -19,7 +18,7 @@ export default class DashboardWidgetGraph extends DashboardSection {
             app.translator.trans('datitisev-dashboard.admin.dashboard.months.november'),
             app.translator.trans('datitisev-dashboard.admin.dashboard.months.december')
         ];
-        const { userCount, discussionCount, postCount } = app.data.settings['datitisev-dashboard.data'];
+        const { userCount, discussionCount, postCount } = app.forum.attribute('datitisev-dashboard.data');
 
         return (<div className="DashboardGraph--Categories">
                 <div className="DashboardGraph--Category Category--Users">
