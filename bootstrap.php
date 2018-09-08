@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of datitisev/flarum-ext-dashboard
+ * This file is part of datitisev/flarum-ext-admindashboard
  *
  * (c) David Sevilla Martín <dsevilla192@icloud.com>
  *
@@ -17,8 +17,8 @@ return [
     (new Extend\Frontend('admin'))
         ->js(__DIR__.'/js/dist/admin.js')
         ->css(__DIR__.'/resources/less/admin.less'),
-    new Extend\Locales(__DIR__ . '/resources/locale'),
+    new Extend\Locales(__DIR__.'/resources/locale'),
     function (Dispatcher $dispatcher) {
         $dispatcher->subscribe(Listeners\PassDataToAdmin::class);
-    }
+    },
 ];
