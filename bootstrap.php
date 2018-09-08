@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of datitisev/flarum-ext-admindashboard
+ * This file is part of datitisev/flarum-ext-dashboard
  *
  * (c) David Sevilla Martín <dsevilla192@icloud.com>
  *
@@ -10,10 +10,15 @@
 
 namespace Datitisev\Dashboard;
 
+use Flarum\Extend;
 use Illuminate\Contracts\Events\Dispatcher;
 
-return function (Dispatcher $events) {
-    // add assets
-    $events->subscribe(Listeners\AddClientAssets::class);
-    $events->subscribe(Listeners\PassDataToAdmin::class);
-};
+return [
+    (new Extend\Frontend('admin'))
+        ->js(__DIR__.'/js/dist/admin.js')
+        ->css(__DIR__.'/resources/less/admin.less'),
+    new Extend\Locales(__DIR__ . '/resources/locale'),
+    function (Dispatcher $dispatcher) {
+        $dispatcher->subscribe(Listeners\PassDataToAdmin::class);
+    }
+];

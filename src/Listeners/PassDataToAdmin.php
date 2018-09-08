@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of datitisev/flarum-ext-admindashboard
+ * This file is part of datitisev/flarum-ext-dashboard
  *
  * (c) David Sevilla Martín <dsevilla192@icloud.com>
  *
@@ -10,10 +10,11 @@
 
 namespace Datitisev\Dashboard\Listeners;
 
-use Flarum\Core\Discussion;
-use Flarum\Core\Post;
-use Flarum\Core\User;
-use Flarum\Event\PrepareUnserializedSettings;
+use Flarum\Api\Event\Serializing;
+use Flarum\Api\Serializer\ForumSerializer;
+use Flarum\Discussion\Discussion;
+use Flarum\Post\Post;
+use Flarum\User\User;
 use Illuminate\Contracts\Events\Dispatcher;
 
 class PassDataToAdmin
@@ -25,21 +26,22 @@ class PassDataToAdmin
      */
     public function subscribe(Dispatcher $events)
     {
-        $events->listen(PrepareUnserializedSettings::class, [$this, 'prepareUnserializedSettings']);
+        $events->listen(Serializing::class, [$this, 'addData']);
     }
 
     /**
      * Adds settings to admin settings.
      *
-     * @param PrepareUnserializedSettings $event
+     * @param Serializing $event
      */
-    public function prepareUnserializedSettings(PrepareUnserializedSettings $event)
+    public function addData(Serializing $event)
     {
-        $event->settings['datitisev-dashboard.data'] = [
-            'php'             => phpversion(),
-            'postCount'       => count(Post::where('type', 'comment')->lists('discussion_id', 'id')),
-            'discussionCount' => count(Discussion::where('is_approved', 1)->lists('id', 'start_post_id')),
-            'userCount'       => count(User::where('is_activated', 1)->lists('id')),
-        ];
+        if ($event->isSerializer(ForumSerializer::class) && $event->actor->isAdmin()) {
+            $event->attributes['datitisev-dashboard.data'] = [
+                'postCount'       => count(Post::where('type', 'comment')->count()),
+                'discussionCount' => count(Discussion::where('is_approved', 1)->count()),
+                'userCount'       => count(User::where('is_activated', 1)->count()),
+            ];
+        }
     }
 }
