@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of datitisev/flarum-ext-dashboard
+ * This file is part of datitisev/flarum-ext-admindashboard
  *
  * (c) David Sevilla Martín <dsevilla192@icloud.com>
  *
