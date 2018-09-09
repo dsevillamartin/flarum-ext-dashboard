@@ -21,7 +21,7 @@ export default class ExtensionUpdatesModal extends Modal {
         const updates = this.needsUpdate.length;
 
         if (updates > 0) {
-            return app.translator.transChoice('datitisev-dashboard.admin.dashboard.updates.available', { count: updates });
+            return app.translator.transChoice('datitisev-dashboard.admin.dashboard.updates.available', updates, { count: updates });
         }
 
         if (this.loading) {

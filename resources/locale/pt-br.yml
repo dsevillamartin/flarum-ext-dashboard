@@ -23,5 +23,5 @@ datitisev-dashboard:
       updates:
         check_button: Atualizar Extensões
         checking: "Verificando atualizações"
-        available: "{number} atualizações disponíveis"
+        available: "{count} atualizações disponíveis"
         none: "No momento não há atualizações"
