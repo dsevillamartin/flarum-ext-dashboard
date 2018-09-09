@@ -23,5 +23,5 @@ datitisev-dashboard:
       updates:
         check_button: Sprawdź aktulizacje rozszerzeń
         checking: "Sprawdź aktualizacje..."
-        avialable: "Dostępne aktualizacje {number}"
+        avialable: "Dostępne aktualizacje {count}"
         none: "Brak aktualizacj!"

@@ -23,5 +23,5 @@ datitisev-dashboard:
       updates:
         check_button: Check Extension Updates
         checking: "Checking Updates..."
-        available: "{number} Update Available|{number} Updates Available"
+        available: "{count} Update Available|{count} Updates Available"
         none: No Updates Found
