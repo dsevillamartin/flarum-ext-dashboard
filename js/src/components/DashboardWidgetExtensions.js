@@ -24,7 +24,7 @@ export default class DashboardWidgetExtensions extends DashboardWidget {
                 <div className="DashboardExtensions--List">
                     {Object.values(extensions).map(extension => (
                         <li
-                            className="DashboardExtensions--Item"
+                            className={'DashboardExtensions--Item ' + (this.isEnabled(extension.id) ? 'enabled' : 'disabled')}
                             onclick={() =>
                                 app.modal.show(
                                     new DashboardExtensionInfoModal({
@@ -44,6 +44,12 @@ export default class DashboardWidgetExtensions extends DashboardWidget {
                 </div>
             </div>
         );
+    }
+
+    isEnabled(name) {
+        const enabled = JSON.parse(app.data.settings.extensions_enabled);
+
+        return enabled.includes(name);
     }
 
     className() {
