@@ -667,6 +667,8 @@ function (_DashboardWidget) {
   var _proto = DashboardWidgetExtensions.prototype;
 
   _proto.content = function content() {
+    var _this = this;
+
     var extensions = app.data.extensions;
     return m("div", null, m("div", {
       className: "DashboardExtensions--Title"
@@ -680,7 +682,7 @@ function (_DashboardWidget) {
       className: "DashboardExtensions--List"
     }, Object.values(extensions).map(function (extension) {
       return m("li", {
-        className: "DashboardExtensions--Item",
+        className: 'DashboardExtensions--Item ' + (_this.isEnabled(extension.id) ? 'enabled' : 'disabled'),
         onclick: function onclick() {
           return app.modal.show(new _DashboardExtensionInfoModal__WEBPACK_IMPORTED_MODULE_5__["default"]({
             extension: extension
@@ -695,6 +697,11 @@ function (_DashboardWidget) {
         className: "DashboardExtensionsItem-title"
       }, extension.extra['flarum-extension'].title)));
     })));
+  };
+
+  _proto.isEnabled = function isEnabled(name) {
+    var enabled = JSON.parse(app.data.settings.extensions_enabled);
+    return enabled.includes(name);
   };
 
   _proto.className = function className() {
