@@ -581,7 +581,7 @@ function (_Modal) {
       className: "DashboardExtensionInfoMain-useful"
     }, m("p", {
       className: "DashboardExtensionInfoMainUseful-author"
-    }, extension.authors && extension.authors.length == 1 ? flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_3___default()('user') : flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_3___default()('users'), ' ', extension.authors ? extension.authors.map(function (e) {
+    }, extension.authors && extension.authors.length === 1 ? flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_3___default()('fas fa-user') : flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_3___default()('fas fa-users'), "\xA0", extension.authors ? extension.authors.map(function (e) {
       return e.name;
     }).join(', ') : 'Unknown'), m("p", {
       className: "DashboardExtensionInfoMainUseful-source"

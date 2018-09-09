@@ -44,7 +44,8 @@ export default class DashboardExtensionInfoModal extends Modal {
                     <p className="DashboardExtensionInfoMain-description">{extension.description || ' '}</p>
                     <p className="DashboardExtensionInfoMain-useful">
                         <p className="DashboardExtensionInfoMainUseful-author">
-                            {extension.authors && extension.authors.length == 1 ? icon('user') : icon('users')}{' '}
+                            {extension.authors && extension.authors.length === 1 ? icon('fas fa-user') : icon('fas fa-users')}
+                            &nbsp;
                             {extension.authors ? extension.authors.map(e => e.name).join(', ') : 'Unknown'}
                         </p>
                         <p className="DashboardExtensionInfoMainUseful-source">
