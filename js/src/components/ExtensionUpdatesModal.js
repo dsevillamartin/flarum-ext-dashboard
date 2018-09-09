@@ -1,178 +1,128 @@
 import Modal from 'flarum/components/Modal';
 import app from 'flarum/app';
+import PQueue from 'p-queue';
+import * as compareVersions from 'compare-versions';
 
 export default class ExtensionUpdatesModal extends Modal {
-    
-    init () {
-        this.extensionUpdates = 0;
+    init() {
         this.loading = true;
         this.needsUpdate = [];
-        
-        this.error = null;
-        this.solution = null;
-        
+
+        this.errors = [];
+
         this.getPackagesAndVersions();
     }
-    
+
     className() {
         return 'DashboardSettingsModal ExtensionUpdatesModal Modal--large';
     }
-    
+
     title() {
-        
-        if (this.extensionUpdates > 0) {
-            return app.translator.trans('datitisev-dashboard.admin.dashboard.extensionUpdates.updatesAvaliable', { number: this.extensionUpdates })
+        const updates = this.needsUpdate.length;
+
+        if (updates > 0) {
+            return app.translator.transChoice('datitisev-dashboard.admin.dashboard.updates.available', { count: updates });
         }
-        if (this.error) {
-            return app.translator.trans('datitisev-dashboard.admin.dashboard.extensionUpdates.error');
-        }
-        
+
         if (this.loading) {
-            return app.translator.trans('datitisev-dashboard.admin.dashboard.extensionUpdates.checking')
-        } else if (this.extensionUpdates == 0) {
-            return app.translator.trans('datitisev-dashboard.admin.dashboard.extensionUpdates.noUpdates');
+            return app.translator.trans('datitisev-dashboard.admin.dashboard.updates.checking');
+        } else if (updates === 0) {
+            return app.translator.trans('datitisev-dashboard.admin.dashboard.updates.none');
         }
     }
-    
+
     content() {
         return (
             <div className="PermissionGrid container">
-                <table className="PermissionGrid" style={this.error || this.extensionUpdates == 0 ? 'display: none' : ''}>
+                <table className="PermissionGrid" style={!this.errors && this.needsUpdate.length === 0 ? 'display: none' : ''}>
                     <thead>
                         <tr>
-                            <th>Extension</th>
+                            <th>
+                                Extension
+                                {this.loading && (
+                                    <span>
+                                        &nbsp;&nbsp;
+                                        <i className="fas fa-circle-notch fa-spin" />
+                                    </span>
+                                )}
+                            </th>
                             <th>Version Installed</th>
                             <th>New Version</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {Object.keys(this.needsUpdate)
-                            .map(id => {
-                                const extension = this.needsUpdate[id];
-                                return (<tr className="ExtensionList--Item PermissionGrid-child">
-                                <td className="ExtensionListItem--Name">{extension.name}</td>
-                                <td className="ExtensionListItem--Installed">{extension.oldVersion}</td>
-                                <td className="ExtensionListItem--NewVersion">{extension.newVersion}</td>
-                                </tr>)
-                            })
-                        }
+                        {Object.keys(this.needsUpdate).map(id => {
+                            const extension = this.needsUpdate[id];
+                            return (
+                                <tr className="PermissionGrid-child">
+                                    <td>{extension.name}</td>
+                                    <td>{extension.oldVersion}</td>
+                                    <td>{extension.newVersion}</td>
+                                </tr>
+                            );
+                        })}
+
+                        {this.errors &&
+                            this.errors.map(ext => (
+                                <tr className="ExtensionUpdatesModal--Error PermissionGrid-child">
+                                    <td>{ext.name}</td>
+                                    <td>{ext.version}</td>
+                                    <td>{ext.error}</td>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
-                <div className={this.error ? '' : 'ExtensionUpdatesModal--Error hidden'}>
-                    <p>{m.trust(this.error)}</p>
-                    <p>{m.trust(this.solution)}</p>
-                </div>
-                <div style={this.extensionUpdates == 0 && !this.error && !this.loading ? '' : 'display: none'}>
-                    <h3>{app.translator.trans('datitisev-dashboard.admin.dashboard.extensionUpdates.noUpdates')}</h3>
+                <div style={this.needsUpdate.length === 0 && !this.errors && !this.loading ? '' : 'display: none'}>
+                    <h3>{app.translator.trans('datitisev-dashboard.admin.dashboard.updates.none')}</h3>
                 </div>
             </div>
-        )
+        );
     }
 
     getPackagesAndVersions() {
-        
-        
-        const extensions = app.data.extensions;
-        const extensionNames = Object.keys(extensions);
-        
-        
-        extensionNames.forEach((el, i, o) => {
-            
-            if (!extensions[el] || !extensions[el].source) return false;
-            
-            let currentExtension = extensions[el];
-            
-            let source = currentExtension.source.url.replace('.git', '').replace('github.com', 'api.github.com/repos');
-            
-            if (source.indexOf('github.com') >= 0) {
-                source = 'https://api.github.com/repos/' + currentExtension.name + '/tags';
-                source += '?client_id=' + app.forum.attribute('datitisev-dashboard.github.client_id') + '&client_secret=' + app.forum.attribute('datitisev-dashboard.github.client_secret');
-            } else return false;
-            
-            this.request({
-                url: source,
-                method: 'GET'
-            }).then((data) => {
-                
-                if (this.error) this.error = null;
-                
-                if (data) {
-                    let newVersion = (data && data.length) ? data[0].name : null;
-                    let version = currentExtension.version;
-                    // let version = 'some_other_version';
-                    
-                    if (newVersion && version != newVersion && version !== 'dev-master' && version != '@dev') {
+        const queue = new PQueue({
+            intervalCap: 2,
+            interval: 500,
+        });
+        const extensions = Object.values(app.data.extensions).filter(v => !v.version.startsWith('dev'));
+
+        const promises = extensions.map(extension => () =>
+            m
+                .request({
+                    url: `https://packagist.org/packages/${extension.name}.json`,
+                })
+                .then(data => {
+                    data = data.package;
+
+                    const versions = Object.keys(data.versions)
+                        .filter(v => !v.startsWith('dev'))
+                        .sort(compareVersions);
+                    const latestVersion = versions[versions.length - 1];
+                    const version = extension.version;
+
+                    if (latestVersion && version !== latestVersion) {
                         this.extensionUpdates = this.needsUpdate.length + 1;
-                        
-                        Promise.resolve(this.needsUpdate.push({
-                            name: currentExtension.name,
+
+                        return this.needsUpdate.push({
+                            name: extension.name,
                             oldVersion: version,
-                            newVersion: newVersion
-                        })).then(() => {
-                            if (o.length - 1 == i) {
-                                this.extensionUpdates = this.needsUpdate.length;
-                                this.loading = false;
-                                m.redraw();
-                            } else {
-                                m.redraw();
-                            }
-                        }).catch(error => {
-                            this.error = error;
-                            m.redraw();
+                            newVersion: latestVersion,
                         });
-                    } else {
-                        this.extensionUpdates = this.needsUpdate.length;
-                        if (o.length - 1 == i) {
-                            this.loading = false;
-                            m.redraw()
-                        } else {
-                            m.redraw();
-                        }
                     }
-                }
-                
-                
-            }).catch((err) => {
 
-                if (!err || typeof err != 'object' || !err.message) return false;
-                
-                let error = err.message.indexOf('rate limit') >= 0 ? err.message.substr(0, 38) : err.message;
-                if (error == 'Not Found' && o.length - 1 == i) {
-                    this.loading = false;
-                    m.redraw()
-                } else if (error == 'Not Found') return false;
-                
-                let solution = err.message.indexOf('rate limit') >= 0 ? app.translator.trans('datitisev-dashboard.admin.dashboard.extensionUpdates.addClientIdAndSecret') : '';
-                
-                this.error = '<b>GitHub:</b> ' + error;
-                this.solution = solution;
-                this.loading = false;
-                m.redraw();
-            });
-        });
-        
-        
-        setTimeout(() => {
-            this.error = '';
-            this.solution = '';
-            this.extensionUpdates = 0;
-            this.needsUpdate = [];
-            this.loading = false;
-            this.getPackagesAndVersions();
-            m.redraw();
-        }, 60000)
-    }
-    
-    
-    request(par) {
-        
-        return new Promise((resolve, reject) => {
-            m.request({
-                method: par.method ? par.method : "GET",
-                url: par.url
-            }).then(resolve).catch(reject);
-        });
+                    m.redraw();
+                })
+                .catch(err => {
+                    if (!err || typeof err !== 'object' || !err.message) return false;
 
+                    this.errors.push({
+                        name: extension.name,
+                        version: extension.version,
+                        error: err.status ? `${err.status}: ${err.message}` : err.message,
+                    });
+                })
+        );
+
+        queue.addAll(promises).then(() => (this.loading = false));
     }
-    
 }
