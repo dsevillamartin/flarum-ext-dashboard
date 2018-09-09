@@ -585,7 +585,7 @@ function (_Modal) {
       return e.name;
     }).join(', ') : 'Unknown'), m("p", {
       className: "DashboardExtensionInfoMainUseful-source"
-    }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_3___default()('code'), ' ', extension.source ? m("a", {
+    }, flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_3___default()('fas fa-code'), "\xA0", extension.source ? m("a", {
       href: extension.source.url,
       target: "_blank"
     }, "Source") : 'Unknown')), m("div", {
@@ -850,7 +850,7 @@ function (_Modal) {
     var updates = this.needsUpdate.length;
 
     if (updates > 0) {
-      return flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.translator.transChoice('datitisev-dashboard.admin.dashboard.updates.available', {
+      return flarum_app__WEBPACK_IMPORTED_MODULE_2___default.a.translator.transChoice('datitisev-dashboard.admin.dashboard.updates.available', updates, {
         count: updates
       });
     }

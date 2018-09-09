@@ -48,7 +48,8 @@ export default class DashboardExtensionInfoModal extends Modal {
                             {extension.authors ? extension.authors.map(e => e.name).join(', ') : 'Unknown'}
                         </p>
                         <p className="DashboardExtensionInfoMainUseful-source">
-                            {icon('code')}{' '}
+                            {icon('fas fa-code')}
+                            &nbsp;
                             {extension.source ? (
                                 <a href={extension.source.url} target="_blank">
                                     Source
