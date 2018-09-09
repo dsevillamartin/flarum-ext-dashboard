@@ -1,10 +1,6 @@
 datitisev-dashboard:
-
   admin:
-
-    ## Translations for new dashboard page
     dashboard:
-
       months:
         january: Styczeń
         february: Luty
@@ -24,26 +20,8 @@ datitisev-dashboard:
         discussions: Dyskusje
         posts: Posty
 
-      flarum_version: "Flarum {version}"
-      php_version: "PHP {version}"
-
-      extensionUpdates:
-        checkUpdates_button: Sprawdź aktulizacje rozszerzeń
+      updates:
+        check_button: Sprawdź aktulizacje rozszerzeń
         checking: "Sprawdź aktualizacje..."
-        updatesAvaliable: "Dostępne aktualizacje {number}"
-        noUpdates: "Brak aktualizacj!"
-        error: "Wystąpił błąd podczas sprawdzania aktualizacji!"
-        addClientIdAndSecret:  => datitisev-dashboard.admin.settings.github_description
-
-
-    ## Settings for the extension
-    settings:
-      title: Dashboard Settings
-
-      github_heading: Github
-      github_description: "Identyfikator klienta i sekretny klucz klienta aplikacji Github są konieczne, aby nie przekroczyć limitu interfejsu API.<br\/\><br\/\> Utwórz aplikację w Github Developers (https://github.com/settings/developers)<br\/\> i wprowadź zmiany w ustawieniach rozszerzenia."
-      clientId_label: Klient Id
-      clientSecret_label: Twój prywatny klucz
-
-      graph_heading: Dashboard
-      interval_label: Jak często ma odświeżać dane
+        avialable: "Dostępne aktualizacje {number}"
+        none: "Brak aktualizacj!"
