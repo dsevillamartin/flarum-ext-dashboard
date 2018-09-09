@@ -186,7 +186,12 @@
     margin-bottom: 20px;
     margin-left: 5%;
 
+    tbody tr {
+      animation: slide-down-in 500ms ease-in 1;
+    }
+
     tr {
+
       td:first-child {
         width: 40%;
       }
@@ -297,3 +302,26 @@
     }
 
   }
+
+@keyframes slide-down-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  50%{
+    transform: translateY(8%);
+  }
+  65%{
+    transform: translateY(-4%);
+  }
+  80%{
+    transform: translateY(4%);
+  }
+  95%{
+    transform: translateY(-2%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
