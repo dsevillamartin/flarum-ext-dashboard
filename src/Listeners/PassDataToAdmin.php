@@ -40,7 +40,7 @@ class PassDataToAdmin
             $event->attributes['datitisev-dashboard.data'] = [
                 'postCount'       => Post::where('type', 'comment')->count(),
                 'discussionCount' => Discussion::where('is_approved', 1)->count(),
-                'userCount'       => User::where('is_activated', 1)->count(),
+                'userCount'       => User::where('is_email_confirmed', 1)->count(),
             ];
         }
     }
