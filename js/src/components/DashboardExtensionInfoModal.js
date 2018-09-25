@@ -22,18 +22,20 @@ export default class DashboardExtensionInfoModal extends Modal {
         return (
             <div className="DashboardExtensionInfo">
                 <div className="Modal-close App-backControl">
-                    {this.loading && <LoadingIndicator className="LoadingIndicator--inline"/>}
-                    {isEnabled && app.extensionSettings[extension.id] &&
+                    {this.loading && <LoadingIndicator className="LoadingIndicator--inline" />}
+                    {isEnabled &&
+                        app.extensionSettings[extension.id] &&
                         Button.component({
                             icon: 'fas fa-cog',
                             onclick: () => app.extensionSettings[extension.id](),
                             className: 'Button Button--icon Button--link',
                         })}
-                    {!isEnabled && Button.component({
-                        icon: 'fas fa-unlink',
-                        onclick: this.uninstall.bind(this),
-                        className: 'Button Button--icon Button--link',
-                    })}
+                    {!isEnabled &&
+                        Button.component({
+                            icon: 'fas fa-unlink',
+                            onclick: this.uninstall.bind(this),
+                            className: 'Button Button--icon Button--link',
+                        })}
                     {Button.component({
                         icon: 'fas fa-times',
                         onclick: this.hide.bind(this),
@@ -48,9 +50,7 @@ export default class DashboardExtensionInfoModal extends Modal {
                     <h3 className="DashboardExtensionInfoMain-title">{extension.extra['flarum-extension'].title}</h3>
                     <span className="DashboardExtensionInfoMain-name">{extension.name}</span>
                     <span className="DashboardExtensionInfoMain-version">{extension.version}</span>
-                    <p className="DashboardExtensionInfoMain-description">
-                        {extension.description || ''}
-                    </p>
+                    <p className="DashboardExtensionInfoMain-description">{extension.description || ''}</p>
                     <p className="DashboardExtensionInfoMain-useful">
                         <p className="DashboardExtensionInfoMainUseful-author">
                             {extension.authors && extension.authors.length === 1 ? icon('fas fa-user') : icon('fas fa-users')}
@@ -112,12 +112,14 @@ export default class DashboardExtensionInfoModal extends Modal {
     uninstall() {
         this.loading = true;
 
-        return app.request({
-            url: `${app.forum.attribute('apiUrl')}/extensions/${this.extension.id}`,
-            method: 'DELETE'
-        }).then(() => {
-            this.loading = false;
-            m.redraw();
-        });
+        return app
+            .request({
+                url: `${app.forum.attribute('apiUrl')}/extensions/${this.extension.id}`,
+                method: 'DELETE',
+            })
+            .then(() => {
+                this.loading = false;
+                m.redraw();
+            });
     }
 }
