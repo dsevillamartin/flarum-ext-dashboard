@@ -39,7 +39,7 @@ class PassDataToAdmin
         if ($event->isSerializer(ForumSerializer::class) && $event->actor->isAdmin()) {
             $event->attributes['datitisev-dashboard.data'] = [
                 'postCount'       => Post::where('type', 'comment')->count(),
-                'discussionCount' => Discussion::where('is_approved', 1)->count(),
+                'discussionCount' => Discussion::count(),
                 'userCount'       => User::where('is_email_confirmed', 1)->count(),
             ];
         }
