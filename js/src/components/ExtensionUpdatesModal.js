@@ -1,7 +1,5 @@
 import Modal from 'flarum/components/Modal';
-import app from 'flarum/app';
 import PQueue from 'p-queue';
-import * as compareVersions from 'compare-versions';
 
 export default class ExtensionUpdatesModal extends Modal {
     init() {
@@ -95,22 +93,19 @@ export default class ExtensionUpdatesModal extends Modal {
                     data = data.package;
 
                     const versions = Object.keys(data.versions)
-                        .filter(v => !v.startsWith('dev'))
-                        .sort(compareVersions);
-                    const latestVersion = versions[versions.length - 1];
+                        .filter(v => !v.startsWith('dev'));
+                    const latestVersion = versions[0];
                     const version = extension.version;
 
                     if (latestVersion && version !== latestVersion) {
                         this.extensionUpdates = this.needsUpdate.length + 1;
 
-                        return this.needsUpdate.push({
+                        this.needsUpdate.push({
                             name: extension.name,
                             oldVersion: version,
                             newVersion: latestVersion,
                         });
                     }
-
-                    m.redraw();
                 })
                 .catch(err => {
                     if (!err || typeof err !== 'object' || !err.message) return false;
@@ -123,6 +118,12 @@ export default class ExtensionUpdatesModal extends Modal {
                 })
         );
 
-        queue.addAll(promises).then(() => (this.loading = false));
+        m.startComputation();
+
+        queue.addAll(promises).then(() => {
+          this.loading = false;
+
+          m.endComputation();
+        });
     }
 }
