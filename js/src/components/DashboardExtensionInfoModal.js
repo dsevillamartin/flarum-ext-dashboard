@@ -19,6 +19,8 @@ export default class DashboardExtensionInfoModal extends Modal {
         const extension = this.extension;
         const isEnabled = this.isEnabled(extension.id);
 
+        const source = (extension.source && extension.source.url) || (extension.support && extension.support.source);
+
         return (
             <div className="DashboardExtensionInfo">
                 <div className="Modal-close App-backControl">
@@ -55,13 +57,13 @@ export default class DashboardExtensionInfoModal extends Modal {
                         <p className="DashboardExtensionInfoMainUseful-author">
                             {extension.authors && extension.authors.length === 1 ? icon('fas fa-user') : icon('fas fa-users')}
                             &nbsp;
-                            {extension.authors ? extension.authors.map(e => e.name).join(', ') : 'Unknown'}
+                            {extension.authors ? extension.authors.map((e) => e.name).join(', ') : 'Unknown'}
                         </p>
                         <p className="DashboardExtensionInfoMainUseful-source">
                             {icon('fas fa-code')}
                             &nbsp;
-                            {extension.source ? (
-                                <a href={extension.source.url} target="_blank">
+                            {source ? (
+                                <a href={source} target="_blank">
                                     Source
                                 </a>
                             ) : (

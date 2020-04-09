@@ -22,7 +22,7 @@ export default class DashboardWidgetExtensions extends DashboardWidget {
                 </div>
 
                 <div className="DashboardExtensions--List">
-                    {Object.values(extensions).map(extension => (
+                    {Object.values(extensions).map((extension) => (
                         <li
                             className={'DashboardExtensions--Item ' + (this.isEnabled(extension.id) ? 'enabled' : 'disabled')}
                             onclick={() =>

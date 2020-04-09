@@ -3,17 +3,17 @@
   "version": "0.0.0",
   "scripts": {
     "build": "webpack --mode production",
-    "watch": "webpack --mode development --watch",
-    "lint": "prettier --single-quote --trailing-comma es5 --print-width 150 --tab-width 4 --write src/**/* src/**/**/*"
+    "dev": "webpack --mode development --watch",
+    "lint": "prettier --single-quote --trailing-comma es5 --print-width 150 --tab-width 4 --write src"
   },
   "dependencies": {
-    "compare-versions": "^3.4.0",
+    "compare-versions": "^3.6.0",
     "flarum-webpack-config": "^0.1.0-beta.9",
-    "p-queue": "^3.0.0",
-    "webpack": "^4.17.1",
-    "webpack-cli": "^3.0.7"
+    "p-queue": "^6.3.0",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
   },
   "devDependencies": {
-    "prettier": "^1.14.2"
+    "prettier": "^2.0.4"
   }
 }

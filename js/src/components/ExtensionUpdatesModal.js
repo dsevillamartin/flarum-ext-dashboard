@@ -51,7 +51,7 @@ export default class ExtensionUpdatesModal extends Modal {
                         </tr>
                     </thead>
                     <tbody>
-                        {Object.keys(this.needsUpdate).map(id => {
+                        {Object.keys(this.needsUpdate).map((id) => {
                             const extension = this.needsUpdate[id];
                             return (
                                 <tr className="PermissionGrid-child">
@@ -63,7 +63,7 @@ export default class ExtensionUpdatesModal extends Modal {
                         })}
 
                         {this.errors &&
-                            this.errors.map(ext => (
+                            this.errors.map((ext) => (
                                 <tr className="ExtensionUpdatesModal--Error PermissionGrid-child">
                                     <td>{ext.name}</td>
                                     <td>{ext.version}</td>
@@ -84,26 +84,24 @@ export default class ExtensionUpdatesModal extends Modal {
             intervalCap: 2,
             interval: 500,
         });
-        const extensions = Object.values(app.data.extensions).filter(v => !v.version.startsWith('dev'));
+        const extensions = Object.values(app.data.extensions).filter((v) => !v.version.startsWith('dev'));
 
-        const promises = extensions.map(extension => () =>
+        const promises = extensions.map((extension) => () =>
             m
                 .request({
                     url: `https://packagist.org/packages/${extension.name}.json`,
                 })
-                .then(data => {
+                .then((data) => {
                     data = data.package;
 
                     const versions = Object.keys(data.versions)
-                        .filter(v => !v.startsWith('dev'))
+                        .filter((v) => !v.startsWith('dev'))
                         .sort(compareVersions);
                     const latestVersion = versions[versions.length - 1];
                     const version = extension.version;
 
                     if (latestVersion && version !== latestVersion) {
-                        this.extensionUpdates = this.needsUpdate.length + 1;
-
-                        return this.needsUpdate.push({
+                        this.needsUpdate.push({
                             name: extension.name,
                             oldVersion: version,
                             newVersion: latestVersion,
@@ -112,7 +110,7 @@ export default class ExtensionUpdatesModal extends Modal {
 
                     m.redraw();
                 })
-                .catch(err => {
+                .catch((err) => {
                     if (!err || typeof err !== 'object' || !err.message) return false;
 
                     this.errors.push({
