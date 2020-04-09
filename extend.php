@@ -1,11 +1,12 @@
 <?php
 
 /*
- * This file is part of datitisev/flarum-ext-admindashboard
+ * This file is part of datitisev/flarum-ext-dashboard.
  *
- * (c) David Sevilla Martín <dsevilla192@icloud.com>
+ * Copyright (c) 2020 David Sevilla Martín.
  *
- * For the full copyright and license information, please view the MIT license
+ * For the full copyright and license information, please view the LICENSE.md
+ * file that was distributed with this source code.
  */
 
 namespace Datitisev\Dashboard;
