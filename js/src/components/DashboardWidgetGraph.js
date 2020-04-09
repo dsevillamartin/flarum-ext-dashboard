@@ -22,7 +22,7 @@ export default class DashboardWidgetGraph extends DashboardWidget {
     }
 
     content() {
-        const { userCount, discussionCount, postCount } = app.forum.attribute('datitisev-dashboard.data');
+        const { userCount, discussionCount, postCount } = app.data['datitisev-dashboard.data'];
 
         return (
             <div className="DashboardGraph--Categories">
