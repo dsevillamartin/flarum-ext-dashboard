@@ -39,8 +39,7 @@
       .number {
         width: 100%;
         font-size: 1.8em;
-        color: @text-color;
-        color: #484848;
+        color: @muted-color;
       }
 
       &.Category--Users .color {
@@ -214,12 +213,7 @@
     display: none;
   }
 
-  .Modal-content {
-    background-color: #EDF2F7;
-  }
-
   .DashboardExtensionInfo-Main {
-    background-color: #EDF2F7;
     min-height: 170px;
 
     .DashboardExtensionInfoMain-icon {
@@ -242,7 +236,7 @@
     }
 
     .DashboardExtensionInfoMain-title {
-      color: #5E7795;
+      color: @heading-color;
       font-size: 20px;
       display: inline-block;
       margin-right: 30px;
@@ -252,22 +246,22 @@
 
     .DashboardExtensionInfoMain-name,
     .DashboardExtensionInfoMain-version {
-      color: #B8C4CF;
+      color: @muted-color;
       font-size: 12px;
       display: inline-block;
       margin-right: 15px;
     }
 
     .DashboardExtensionInfoMain-description {
-      color: #9FAEBC;
+      color: @text-color;
       font-size: 16px;
     }
 
     .DashboardExtensionInfoMain-useful {
+      color: @muted-color;
       margin-bottom: 0;
 
       & > p {
-        color: #98A7B6;
         font-size: 12px;
         display: inline-block;
         margin-right: 10px;
@@ -279,7 +273,7 @@
     }
 
     .DashboardExtensionInfoMain-enabled {
-      color: #9EADBC;
+      color: @text-color;
       text-transform: uppercase;
       font-weight: 600;
 
@@ -291,17 +285,13 @@
 }
 
 @media (max-width: 1006px) {
-
-    .ExtensionUpdatesModal {
-
-      .Modal-header {
-        padding-bottom: inherit;
-        border-bottom: none;
-      }
-
+  .ExtensionUpdatesModal {
+    .Modal-header {
+      padding-bottom: inherit;
+      border-bottom: none;
     }
-
   }
+}
 
 @keyframes slide-down-in {
   0% {
