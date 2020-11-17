@@ -14,11 +14,9 @@ export default class DashboardWidgetExtensions extends DashboardWidget {
                 <div className="DashboardExtensions--Title">
                     <span>{app.translator.trans('core.admin.nav.extensions_button')}</span>
 
-                    {Button.component({
-                        children: icon('fas fa-upload'),
-                        className: 'Button',
-                        onclick: () => app.modal.show(new ExtensionUpdatesModal()),
-                    })}
+                    <Button className="Button" onclick={() => app.modal.show(ExtensionUpdatesModal)}>
+                        {icon('fas fa-upload')}
+                    </Button>
                 </div>
 
                 <div className="DashboardExtensions--List">
@@ -26,11 +24,9 @@ export default class DashboardWidgetExtensions extends DashboardWidget {
                         <li
                             className={'DashboardExtensions--Item ' + (this.isEnabled(extension.id) ? 'enabled' : 'disabled')}
                             onclick={() =>
-                                app.modal.show(
-                                    new DashboardExtensionInfoModal({
-                                        extension,
-                                    })
-                                )
+                                app.modal.show(DashboardExtensionInfoModal, {
+                                    extension,
+                                })
                             }
                         >
                             <div className="DashboardExtensionsItem-content">

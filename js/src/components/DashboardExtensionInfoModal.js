@@ -5,18 +5,12 @@ import Switch from 'flarum/components/Switch';
 import LoadingIndicator from 'flarum/components/LoadingIndicator';
 
 export default class DashboardExtensionInfoModal extends Modal {
-    init() {
-        super.init();
-
-        this.extension = this.props.extension;
-    }
-
     className() {
         return 'DashboardExtensionInfoModal Modal--large';
     }
 
     content() {
-        const extension = this.extension;
+        const extension = this.attrs.extension;
         const isEnabled = this.isEnabled(extension.id);
 
         const source = (extension.source && extension.source.url) || (extension.support && extension.support.source);
@@ -72,11 +66,9 @@ export default class DashboardExtensionInfoModal extends Modal {
                         </p>
                     </p>
                     <div className="DashboardExtensionInfoMain-enabled">
-                        {Switch.component({
-                            state: isEnabled,
-                            children: isEnabled ? 'Enabled' : 'Disabled',
-                            onchange: this.toggle.bind(this, extension.id),
-                        })}
+                        <Switch state={isEnabled} onchange={this.toggle.bind(this, extension.id)}>
+                          {isEnabled ? 'Enabled' : 'Disabled'}
+                        </Switch>
                     </div>
                 </div>
             </div>
@@ -116,7 +108,7 @@ export default class DashboardExtensionInfoModal extends Modal {
 
         return app
             .request({
-                url: `${app.forum.attribute('apiUrl')}/extensions/${this.extension.id}`,
+                url: `${app.forum.attribute('apiUrl')}/extensions/${this.attrs.extension.id}`,
                 method: 'DELETE',
             })
             .then(() => {

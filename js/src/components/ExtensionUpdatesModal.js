@@ -4,11 +4,17 @@ import PQueue from 'p-queue';
 import * as compareVersions from 'compare-versions';
 
 export default class ExtensionUpdatesModal extends Modal {
-    init() {
+    oninit(vnode) {
+        super.oninit(vnode);
+
         this.loading = true;
         this.needsUpdate = [];
 
         this.errors = [];
+    }
+
+    oncreate(vnode) {
+        super.oncreate(vnode);
 
         this.getPackagesAndVersions();
     }
