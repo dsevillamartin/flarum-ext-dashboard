@@ -91,7 +91,7 @@ export default class DashboardExtensionInfoModal extends Modal {
         app.request({
             url: `${app.forum.attribute('apiUrl')}/extensions/${id}`,
             method: 'PATCH',
-            data: { enabled: !enabled },
+            body: { enabled: !enabled },
         }).then(() => {
             const enabledArr = JSON.parse(app.data.settings.extensions_enabled);
             if (!enabled) enabledArr.push(id);
